@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fff5d8">
+<title>Misi Pengembaraan Membaca — Permainan Suku Kata</title>
+<!-- BBM digital: aktiviti pemulihan membaca berasaskan petunjuk visual, percubaan, semakan dan pembetulan sebagai kitaran penyelesaian masalah. -->
+<style>
+:root{
+  --ink:#243456;
+  --muted:#667493;
+  --purple:#7357d9;
+  --purple-dark:#5438b5;
+  --pink:#ff729b;
+  --yellow:#ffd34e;
+  --mint:#a6ead0;
+  --sky:#dff4ff;
+  --paper:#fffdf7;
+  --line:#e7eaf4;
+  --green:#25986b;
+  --red:#c94a60;
+  --shadow:0 14px 36px rgba(53,69,113,.12)}
+
+*{
+  box-sizing:border-box}
+html{
+  min-height:100%;
+  background:#fff8e9}
+body{
+  margin:0;
+  font-family:ui-rounded,"Trebuchet MS",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:radial-gradient(circle at 8% 5%,#fff0b8 0,transparent 23%),radial-gradient(circle at 92% 12%,#d7f2ff 0,transparent 25%),linear-gradient(145deg,#fff9e9,#eff9ff 52%,#fff1f6);
+  min-height:100vh}
+button,select,input{
+  font:inherit}
+button{
+  cursor:pointer;
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+button:hover{
+  transform:translateY(-1px)}
+button:focus-visible,select:focus-visible{
+  outline:3px solid #2b8eff;
+  outline-offset:3px}
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none}
+.app-shell{
+  width:min(1180px,100%);
+  margin:0 auto;
+  padding:18px 18px 32px}
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:18px}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:1000;
+  letter-spacing:.2px}
+.brand-mark{
+  width:44px;
+  height:44px;
+  border-radius:15px;
+  background:linear-gradient(145deg,#ffdc65,#ffad74);
+  display:grid;
+  place-items:center;
+  box-shadow:0 7px 0 #e99c57;
+  font-size:24px}
+.brand small{
+  display:block;
+  font-size:11px;
+  color:#777f9e;
+  letter-spacing:1px;
+  text-transform:uppercase}
+.top-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center}
+.tiny-btn,.pill-btn{
+  border:1px solid #e3e6f1;
+  background:rgba(255,255,255,.9);
+  color:var(--ink);
+  padding:9px 12px;
+  border-radius:13px;
+  font-weight:800;
+  font-size:13px;
+  box-shadow:0 4px 10px rgba(58,73,117,.05)}
+.settings-inline{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(255,255,255,.86);
+  border:1px solid #e6e8f0;
+  padding:6px 8px;
+  border-radius:14px;
+  flex-wrap:wrap}
+.settings-inline label{
+  font-size:11px;
+  font-weight:900;
+  color:#66708f;
+  text-transform:uppercase;
+  letter-spacing:.4px}
+.settings-inline select{
+  border:1px solid #e0e4ef;
+  border-radius:9px;
+  padding:7px 8px;
+  background:white;
+  color:var(--ink);
+  font-size:12px;
+  max-width:165px}
+.settings-inline input[type="range"]{
+  width:66px;
+  accent-color:#7357d9;
+  cursor:pointer}
+.shortcut-note{font-size:12px;font-weight:800;color:#66708f;padding:7px 9px;border-radius:10px;background:#fff}\n.music-toggle{
+  background:#fff2c5;
+  border:1px solid #f5dc81;
+  border-radius:10px;
+  padding:7px 9px;
+  font-size:12px;
+  font-weight:900;
+  color:#654e12}
+.screen{
+  animation:rise .28s ease both}
+@keyframes rise{
+  from{
+  opacity:0;
+  transform:translateY(8px)}
+to{
+  opacity:1;
+  transform:translateY(0)}
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.92);
+  border-radius:32px;
+  padding:clamp(24px,5vw,48px);
+  background:linear-gradient(130deg,#e4f8ff 0%,#f1f0ff 47%,#fff1c9 100%);
+  box-shadow:var(--shadow);
+  min-height:400px;
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  align-items:center;
+  gap:25px}
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none}
+.hero:before{
+  width:290px;
+  height:290px;
+  background:rgba(255,255,255,.34);
+  top:-130px;
+  right:25%}
+.hero:after{
+  width:240px;
+  height:240px;
+  background:rgba(255,255,255,.28);
+  bottom:-145px;
+  left:30%}
+.hero-copy,.hero-art{
+  position:relative;
+  z-index:1}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:#fff;
+  border:1px solid #f2e5b7;
+  border-radius:999px;
+  padding:8px 13px;
+  font-weight:900;
+  color:#7d6414;
+  font-size:12px;
+  letter-spacing:.6px;
+  text-transform:uppercase}
+.hero h1{
+  font-size:clamp(36px,5.3vw,66px);
+  line-height:.99;
+  letter-spacing:-2px;
+  margin:18px 0 10px;
+  color:#382c82;
+  text-shadow:0 3px 0 #fff}
+.hero h1 span{
+  display:block;
+  color:#f05d91}
+.hero-subtitle{
+  font-size:clamp(17px,2vw,23px);
+  font-weight:950;
+  margin:0 0 14px}
+.hero p{
+  font-size:16px;
+  line-height:1.6;
+  color:#4f5c7a;
+  max-width:490px}
+.hero-buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:24px}
+.primary-btn,.secondary-btn,.soft-btn{
+  border:0;
+  border-radius:16px;
+  padding:14px 19px;
+  font-weight:1000;
+  box-shadow:0 6px 0 rgba(45,52,99,.15);
+  font-size:14px}
+.primary-btn{
+  background:linear-gradient(135deg,#ff719b,#ff997c);
+  color:white;
+  text-shadow:0 1px 1px rgba(100,20,60,.15)}
+.secondary-btn{
+  background:#fff;
+  color:#5141a0;
+  border:1px solid #e8e1ff}
+.soft-btn{
+  background:#e5f8ed;
+  color:#18724e;
+  border:1px solid #c9efd9}
+.hero-art{
+  min-height:310px;
+  display:flex;
+  align-items:center;
+  justify-content:center}
+.island-scene{
+  position:relative;
+  width:min(390px,100%);
+  aspect-ratio:1/1;
+  display:grid;
+  place-items:center}
+.sun{
+  position:absolute;
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  background:#ffdd66;
+  top:5%;
+  right:8%;
+  box-shadow:0 0 0 12px rgba(255,221,102,.22)}
+.cloud{
+  position:absolute;
+  font-size:42px;
+  filter:drop-shadow(0 4px 0 rgba(78,122,156,.06))}
+.cloud.a{
+  left:5%;
+  top:10%}
+.cloud.b{
+  right:2%;
+  top:35%;
+  font-size:32px}
+.island{
+  position:absolute;
+  bottom:9%;
+  width:91%;
+  height:53%;
+  border-radius:50%;
+  background:linear-gradient(165deg,#8ae3a7 0%,#4cbc8e 65%,#2b9b79 100%);
+  transform:rotate(-7deg);
+  box-shadow:0 14px 0 #2c967b,0 25px 25px rgba(35,117,105,.16);
+  border:7px solid rgba(255,255,255,.6)}
+.island:before{
+  content:"";
+  position:absolute;
+  inset:15% 10%;
+  border:3px dashed rgba(255,255,255,.7);
+  border-radius:50%;
+  transform:rotate(8deg)}
+.treasure{
+  position:absolute;
+  bottom:27%;
+  left:35%;
+  width:125px;
+  height:105px;
+  filter:drop-shadow(0 8px 0 rgba(93,80,55,.16));
+  transform:rotate(-5deg)}
+.treasure-lid{
+  position:absolute;
+  left:9px;
+  top:4px;
+  width:108px;
+  height:42px;
+  border-radius:15px 15px 5px 5px;
+  background:linear-gradient(#ffdc61,#f4a928);
+  border:5px solid #be791e}
+.treasure-base{
+  position:absolute;
+  left:9px;
+  top:38px;
+  width:108px;
+  height:57px;
+  border-radius:5px 5px 14px 14px;
+  background:linear-gradient(90deg,#eaa52b,#ffdc58 45%,#d8871d);
+  border:5px solid #be791e}
+.treasure-lock{
+  position:absolute;
+  z-index:2;
+  left:52px;
+  top:44px;
+  width:25px;
+  height:29px;
+  border-radius:7px;
+  background:#fff2a8;
+  border:4px solid #bf7b1e}
+.floating-item{
+  position:absolute;
+  width:83px;
+  height:77px;
+  border-radius:22px;
+  background:rgba(255,255,255,.93);
+  display:grid;
+  place-items:center;
+  box-shadow:0 9px 18px rgba(48,69,106,.12);
+  border:3px solid #fff;
+  animation:float 3.1s ease-in-out infinite}
+.floating-item svg{
+  width:72px;
+  height:65px}
+.floating-item.one{
+  top:20%;
+  left:18%;
+  transform:rotate(-9deg)}
+.floating-item.two{
+  right:11%;
+  bottom:21%;
+  transform:rotate(8deg);
+  animation-delay:.6s}
+.floating-item.three{
+  top:34%;
+  right:5%;
+  transform:rotate(9deg);
+  animation-delay:1.1s}
+@keyframes float{
+  0%,100%{
+  translate:0 0}
+50%{
+  translate:0 -8px}
+}
+.mission-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 18px}.mission-step{padding:10px 8px;border:2px solid #e4e7f4;border-radius:15px;background:#fff;text-align:center;font-size:12px;font-weight:1000;color:#687493}.mission-step.active{background:#f0edff;border-color:#8d7bea;color:#4935a9;box-shadow:0 4px 0 #d9d0ff}.mission-step.done{background:#e7fff3;border-color:#73d6ae;color:#176b4c}.reward-strip{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;padding:12px 14px;border-radius:16px;background:linear-gradient(120deg,#fff4c9,#ffe8f1,#e7f8ff);border:1px solid #f0dfb3}.reward-pill{padding:7px 10px;background:#fff;border:1px solid #e9e5f2;border-radius:999px;font-weight:1000;font-size:12px;color:#5141a0}.audio-action-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;margin-top:12px}.audio-action-row .small-btn{min-height:64px;line-height:1.35;background:#f5f1ff;border:2px solid #dcd4ff;color:#46359d}.audio-action-row .small-btn:hover{background:#e9e2ff;border-color:#9c8bea}.audio-action-row .small-btn:focus-visible{outline:4px solid #2b8eff;outline-offset:3px}@media(max-width:560px){.audio-action-row{grid-template-columns:1fr}.mission-track{grid-template-columns:1fr}}
+.syllable-choice-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;margin:12px 0}.syllable-choice{border:3px solid #ffd34e;border-radius:18px;padding:16px 10px;background:linear-gradient(145deg,#fff5c9,#ffe08a);color:#62430b;font-size:19px;font-weight:1000;box-shadow:0 6px 0 #d6a52e;min-height:90px}.syllable-choice span{display:block;font-size:12px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}.syllable-choice:focus-visible{outline:4px solid #2b8eff;outline-offset:3px}.syllable-choice.done{background:#e6fff3;border-color:#55c99a;box-shadow:0 6px 0 #91dabb;color:#176b4c}.word-strip{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:10px;
+  margin:18px 0}
+.word-chip{
+  border:1px solid #e7eaf2;
+  background:rgba(255,255,255,.91);
+  border-radius:17px;
+  padding:10px 6px 11px;
+  text-align:center;
+  box-shadow:0 5px 14px rgba(40,55,95,.05)}
+.word-chip svg{
+  width:min(92px,100%);
+  height:64px;
+  display:block;
+  margin:auto}
+.word-chip strong{
+  display:block;
+  letter-spacing:1px;
+  color:#45369b;
+  margin-top:3px;
+  font-size:13px}
+.panel{
+  border:1px solid #e8eaf2;
+  background:rgba(255,255,255,.94);
+  border-radius:25px;
+  padding:clamp(18px,3vw,30px);
+  box-shadow:var(--shadow)}
+.section-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:18px}
+.kicker{
+  font-size:12px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:#8a79be;
+  font-weight:1000}
+.section-head h2{
+  margin:6px 0 6px;
+  font-size:clamp(25px,3vw,35px);
+  letter-spacing:-.6px;
+  color:#382f7d}
+.section-head p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.55}
+.level-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:9px 13px;
+  border-radius:13px;
+  background:#fff0ba;
+  color:#735a10;
+  font-weight:1000;
+  font-size:12px}
+.instruction-grid{
+  display:grid;
+  grid-template-columns:1fr .85fr;
+  gap:20px;
+  align-items:stretch}
+.steps{
+  display:grid;
+  gap:11px}
+.step{
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:12px;
+  align-items:start;
+  padding:13px 14px;
+  border:1px solid #eceef5;
+  border-radius:16px;
+  background:#fff}
+.step-num{
+  width:34px;
+  height:34px;
+  background:#eee9ff;
+  color:#5e45c1;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-weight:1000}
+.step h3{
+  font-size:15px;
+  margin:1px 0 4px}
+.step p{
+  font-size:13px;
+  line-height:1.5;
+  color:#64708d;
+  margin:0}
+.example-box{
+  background:linear-gradient(150deg,#e5f8ff,#f1efff 60%,#fff5d7);
+  border-radius:22px;
+  border:1px solid #e3e8f5;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  gap:13px;
+  min-height:350px}
+.example-art{
+  width:160px;
+  height:130px;
+  display:grid;
+  place-items:center;
+  background:#fff;
+  border-radius:24px;
+  box-shadow:0 7px 15px rgba(49,66,105,.08)}
+.example-art svg{
+  width:145px;
+  height:118px}
+.example-label{
+  color:#6a7392;
+  font-weight:900;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.7px}
+.syllable-pair{
+  display:flex;
+  gap:9px;
+  align-items:center}
+.syllable-card{
+  background:white;
+  border:2px solid #dad3ff;
+  border-radius:15px;
+  padding:11px 19px;
+  font-size:26px;
+  font-weight:1000;
+  color:#4f3bb1;
+  box-shadow:0 4px 0 #d7cff9}
+.plus{
+  font-size:23px;
+  font-weight:1000;
+  color:#8d80bf}
+.example-answer{
+  font-size:25px;
+  font-weight:1000;
+  letter-spacing:3px;
+  color:#25845f}
+.guide-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:20px}
+.game-meta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap}
+.progress-wrap{
+  width:190px;
+  max-width:100%;
+  height:10px;
+  background:#eef0f8;
+  border-radius:20px;
+  overflow:hidden}
+.progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,#65d6b1,#7e71ed);
+  border-radius:20px;
+  transition:width .25s ease}
+.question-count{
+  font-size:12px;
+  font-weight:1000;
+  color:#66718d}
+.game-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(270px,.76fr);
+  gap:18px;
+  align-items:stretch}
+.challenge-card{
+  border:1px solid #e6eaf3;
+  border-radius:23px;
+  padding:clamp(16px,3vw,26px);
+  background:linear-gradient(145deg,#fff,#f7f9ff);
+  min-height:390px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center}
+.challenge-card h3{
+  font-size:20px;
+  margin:0 0 8px}
+.challenge-card .prompt{
+  color:#68738e;
+  font-size:14px;
+  line-height:1.55;
+  margin:0 0 15px}
+.picture-card{
+  width:min(260px,100%);
+  height:190px;
+  border-radius:24px;
+  background:linear-gradient(150deg,#e4f8ff,#f5f1ff);
+  border:2px solid white;
+  box-shadow:0 8px 20px rgba(50,70,120,.1);
+  display:grid;
+  place-items:center;
+  margin:4px auto 16px}
+.picture-card svg{
+  width:230px;
+  height:170px}
+.picture-card.small{
+  width:140px;
+  height:110px;
+  margin:0}
+.picture-card.small svg{
+  width:130px;
+  height:100px}
+.word-display{
+  font-size:clamp(29px,5vw,48px);
+  letter-spacing:3px;
+  font-weight:1000;
+  color:#4235a0;
+  background:#f0edff;
+  border:2px solid #ded7ff;
+  padding:12px 23px;
+  border-radius:17px;
+  margin:6px 0 14px}
+.answer-side{
+  border:1px solid #e8eaf2;
+  border-radius:23px;
+  background:#fff;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:14px}
+.answer-side h3{
+  margin:0;
+  font-size:17px}
+.hint-text{
+  font-size:13px;
+  color:#6b7690;
+  line-height:1.5;
+  margin:0}
+.tiles{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin:7px 0}
+.syllable-tile{
+  background:#ffdd70;
+  border:2px solid #edb938;
+  border-radius:16px;
+  min-width:85px;
+  min-height:70px;
+  padding:10px 16px;
+  font-size:29px;
+  color:#66450d;
+  font-weight:1000;
+  box-shadow:0 5px 0 #d59e2d}
+.syllable-tile.selected{
+  outline:4px solid #8876f0;
+  background:#e5dfff;
+  border-color:#8876f0;
+  box-shadow:0 5px 0 #b8a7fa}
+.slots{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:9px;
+  align-items:center;
+  width:100%;
+  max-width:390px;
+  margin:5px auto}
+.slot{
+  min-height:73px;
+  border:2px dashed #b8c4da;
+  border-radius:16px;
+  background:#f8fbff;
+  color:#8590a9;
+  font-size:24px;
+  font-weight:1000;
+  display:grid;
+  place-items:center}
+.slot.filled{
+  border-style:solid;
+  border-color:#7c6be5;
+  background:#f0edff;
+  color:#4b37ab}
+.slot-label{
+  font-size:11px;
+  font-weight:900;
+  color:#7b86a0;
+  text-transform:uppercase;
+  letter-spacing:.7px}
+.option-list{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:4px}
+.image-options{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  margin-top:8px}
+.image-option{
+  aspect-ratio:1/1;
+  min-height:112px;
+  border:2px solid #e7eaf3;
+  border-radius:17px;
+  background:linear-gradient(145deg,#f3f7ff,#fff);
+  padding:7px;
+  display:grid;
+  place-items:center;
+  box-shadow:0 4px 0 #eef0f6}
+.image-option svg{
+  width:100%;
+  max-width:140px;
+  height:auto}
+.image-option:hover{
+  border-color:#a99bef;
+  background:#fbfaff}
+.image-option:disabled{
+  opacity:.55}
+.option-btn{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+  border:2px solid #e7eaf3;
+  border-radius:17px;
+  background:#fff;
+  padding:9px 13px;
+  min-height:76px;
+  color:var(--ink);
+  font-size:21px;
+  font-weight:1000;
+  letter-spacing:1px;
+  box-shadow:0 4px 0 #eef0f6}
+.option-btn .option-art{
+  width:55px;
+  height:50px;
+  display:grid;
+  place-items:center;
+  background:#f3f6ff;
+  border-radius:13px;
+  flex-shrink:0}
+.option-btn .option-art svg{
+  width:52px;
+  height:47px}
+.option-btn:hover{
+  border-color:#a99bef;
+  background:#fbfaff}
+.option-btn:disabled{
+  opacity:.5}
+.option-btn.correct{
+  border-color:#66d0a2;
+  background:#eafff4;
+  box-shadow:0 4px 0 #bfead5}
+.feedback{
+  border-radius:15px;
+  padding:12px 14px;
+  font-size:14px;
+  line-height:1.45;
+  font-weight:800;
+  display:flex;
+  align-items:flex-start;
+  gap:9px}
+.question-earned{
+  border:1px solid #bcebd5;
+  background:linear-gradient(135deg,#e7fff3,#f0fff8);
+  color:#176b4c;
+  border-radius:14px;
+  padding:11px 13px;
+  font-size:13px;
+  font-weight:1000;
+  text-align:center;
+  line-height:1.5}
+.feedback.good{
+  background:#e7fff3;
+  color:#176b4c;
+  border:1px solid #bcebd5}
+.feedback.try{
+  background:#fff4d9;
+  color:#79510b;
+  border:1px solid #f3dfa2}
+.feedback.neutral{
+  background:#eef5ff;
+  color:#395c92;
+  border:1px solid #d6e6ff}
+.action-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  justify-content:center;
+  margin-top:10px}
+.action-row button{
+  flex:1;
+  min-width:130px}
+.small-btn{
+  border:1px solid #e3e7f2;
+  background:#fff;
+  border-radius:14px;
+  padding:11px 13px;
+  font-size:12px;
+  font-weight:1000;
+  color:#514a87}
+.primary-btn:active,.secondary-btn:active,.soft-btn:active{
+  transform:translateY(2px);
+  box-shadow:0 3px 0 rgba(45,52,99,.12)}
+.score-hero{
+  text-align:center;
+  background:linear-gradient(145deg,#f0edff,#e5f9ff 55%,#fff2c9);
+  border:1px solid white;
+  border-radius:27px;
+  padding:28px 20px;
+  margin-bottom:18px}
+.score-emoji{
+  font-size:56px;
+  line-height:1.2}
+.score-hero h2{
+  font-size:clamp(27px,4vw,40px);
+  margin:8px 0;
+  color:#3e328e;
+  letter-spacing:-.7px}
+.score-hero p{
+  margin:0;
+  color:#64708d}
+.score-number{
+  font-size:clamp(40px,6vw,62px);
+  font-weight:1000;
+  color:#ef6290;
+  margin:14px 0 4px;
+  letter-spacing:-1px}
+.score-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:18px 0}
+.score-card{
+  border:1px solid #e7eaf3;
+  border-radius:18px;
+  padding:15px;
+  background:#fff;
+  text-align:center}
+.score-card .s-icon{
+  font-size:25px}
+.score-card strong{
+  display:block;
+  font-size:26px;
+  color:#4a3ab1;
+  margin:5px 0}
+.score-card span{
+  font-size:12px;
+  color:#727d98;
+  font-weight:800}
+.score-details{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px}
+.detail-pill{
+  background:#f7f8fd;
+  border:1px solid #eaedf6;
+  border-radius:14px;
+  padding:13px;
+  text-align:center}
+.detail-pill strong{
+  display:block;
+  font-size:20px;
+  color:#3f4687}
+.detail-pill span{
+  font-size:11px;
+  color:#707c96;
+  font-weight:800}
+.score-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:23px}
+.score-actions button{
+  min-width:185px}
+.footer-note{
+  text-align:center;
+  color:#7b85a0;
+  font-size:11px;
+  margin:20px 0 0}
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(34,39,74,.43);
+  z-index:20;
+  display:grid;
+  place-items:center;
+  padding:18px}
+.modal{
+  width:min(560px,100%);
+  background:#fff;
+  border-radius:24px;
+  padding:25px;
+  box-shadow:0 22px 65px rgba(20,25,60,.22)}
+.modal h2{
+  margin:0 0 8px;
+  color:#47369e}
+.modal p{
+  color:#68738c;
+  line-height:1.6}
+.close-row{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:20px}
+.problem-solving-strip{display:grid;gap:12px;margin-top:18px;padding:16px 18px;border:1px solid #d9e5f6;border-radius:18px;background:linear-gradient(120deg,#eaf8ff,#f4f0ff 58%,#fff7dc)}
+.problem-solving-strip h3{margin:0 0 5px;color:#44368e;font-size:15px}
+.problem-solving-strip p{margin:0;color:#596783;font-size:13px;line-height:1.5}
+.problem-solving-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.problem-solving-step{display:flex;align-items:center;gap:7px;padding:9px 10px;background:rgba(255,255,255,.88);border:1px solid #e1e5f2;border-radius:12px;font-size:12px;font-weight:900;color:#4d547b}
+.problem-solving-step b{display:grid;place-items:center;flex:0 0 25px;width:25px;height:25px;border-radius:9px;background:#e6e0ff;color:#5943b8}
+.guide-player{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.guide-player .primary-btn,.guide-player .secondary-btn{min-width:190px}
+.voice-status{
+  margin:-6px 0 14px;
+  padding:8px 12px;
+  border-radius:12px;
+  background:rgba(255,255,255,.74);
+  border:1px solid #e9eaf2;
+  color:#68738e;
+  font-size:11px;
+  line-height:1.45}
+.notice{
+  padding:10px 13px;
+  border-radius:12px;
+  background:#fff2ce;
+  color:#795a08;
+  font-size:12px;
+  line-height:1.5;
+  border:1px solid #f2df9e}
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0}
+
+@media(max-width:820px){
+.problem-solving-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{
+  grid-template-columns:1fr;
+  text-align:center}
+.hero p{
+  margin-left:auto;
+  margin-right:auto}
+.hero-buttons{
+  justify-content:center}
+.hero-art{
+  min-height:270px}
+.island-scene{
+  max-width:320px}
+.instruction-grid,.game-grid{
+  grid-template-columns:1fr}
+.example-box{
+  min-height:300px}
+.word-strip{
+  grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:520px){
+.problem-solving-steps{grid-template-columns:1fr}.guide-player button{width:100%}
+  .image-option{
+  min-height:95px;
+  padding:5px}
+.image-option svg{
+  height:74px}
+.app-shell{
+  padding:12px 10px 24px}
+.topbar{
+  align-items:flex-start}
+.brand{
+  font-size:14px}
+.settings-inline{
+  width:100%;
+  justify-content:space-between}
+.settings-inline select{
+  max-width:130px}
+.hero{
+  padding:25px 17px;
+  border-radius:24px}
+.hero h1{
+  letter-spacing:-1.4px}
+.hero-art{
+  min-height:240px}
+.floating-item{
+  width:68px;
+  height:65px}
+.floating-item svg{
+  width:60px;
+  height:55px}
+.treasure{
+  scale:.8}
+.word-strip{
+  gap:7px}
+.word-chip{
+  border-radius:13px}
+.word-chip svg{
+  height:52px}
+.word-chip strong{
+  font-size:11px}
+.score-cards{
+  grid-template-columns:1fr}
+.score-details{
+  grid-template-columns:1fr}
+.score-actions button{
+  width:100%}
+.challenge-card{
+  min-height:350px}
+.picture-card{
+  height:165px}
+.picture-card svg{
+  width:205px;
+  height:150px}
+}
+.picture-card svg{width:min(100%,300px);height:auto;min-height:210px;display:block;margin:0 auto}.option-art svg{width:100%;height:auto;max-width:150px;display:block;margin:0 auto}.word-chip svg{width:100%;height:auto;max-width:130px;display:block;margin:0 auto}
+
+
+/* === Reka letak visual mesra murid pemulihan: lapisan reka bentuk sahaja === */
+:root{
+ --ink:#172554;--muted:#52627f;--purple:#6246d8;--purple-dark:#4330a5;
+ --pink:#f34f91;--yellow:#ffd34e;--mint:#75dfb2;--sky:#d9f3ff;
+ --paper:#ffffff;--line:#dce5f5;--green:#16845b;--red:#b83250;
+ --shadow:0 18px 44px rgba(35,49,101,.14)
+}
+html{background:#edf4ff}
+body{
+ background:radial-gradient(ellipse at 8% 0%,rgba(255,216,100,.42),transparent 28%),
+ radial-gradient(ellipse at 95% 8%,rgba(130,221,255,.42),transparent 30%),
+ linear-gradient(155deg,#f8fbff 0%,#f0edff 48%,#fff7e6 100%);
+ background-attachment:fixed;color:var(--ink)
+}
+.app-shell{width:min(1240px,100%);padding:22px 22px 36px}
+.topbar{position:relative;padding:12px 16px;margin-bottom:22px;border:1px solid rgba(255,255,255,.95);border-radius:22px;background:rgba(255,255,255,.82);box-shadow:0 8px 24px rgba(43,55,111,.08);backdrop-filter:blur(8px)}
+.brand{font-size:16px;letter-spacing:.2px;color:#30266f}
+.brand-mark{width:50px;height:50px;border-radius:17px;background:linear-gradient(145deg,#ffe16e,#ff9f83);box-shadow:0 5px 0 #e79b62;font-size:26px}
+.brand small{color:#6b7396;font-size:10px;letter-spacing:1.3px}
+.top-actions{gap:10px}
+.screen{animation:rise .32s cubic-bezier(.2,.75,.25,1) both}
+.hero{border:2px solid rgba(255,255,255,.96);border-radius:34px;padding:clamp(26px,5vw,54px);min-height:450px;gap:32px;background:linear-gradient(132deg,#dcf7ff 0%,#eeebff 46%,#fff0c7 100%);box-shadow:0 22px 50px rgba(62,64,136,.16)}
+.hero h1{font-size:clamp(37px,5.4vw,68px);line-height:1.02;letter-spacing:-2px;color:#30236f;text-wrap:balance}
+.hero h1 span{color:#ed4d91;text-shadow:0 2px 0 #fff}
+.eyebrow{background:#fff;border:2px solid #fff0b5;color:#76530a;box-shadow:0 5px 0 rgba(236,192,68,.22);font-size:12px}
+.hero-subtitle{color:#3e327f;font-size:clamp(18px,2vw,24px)}
+.hero p{font-size:17px;line-height:1.7;color:#465779}
+.hero-buttons{margin-top:27px}
+.primary-btn{background:linear-gradient(135deg,#ff5792,#ff875f);border:2px solid rgba(255,255,255,.8);border-radius:18px;padding:16px 24px;color:#fff;font-size:15px;letter-spacing:.35px;box-shadow:0 7px 0 #c94378,0 12px 20px rgba(204,61,116,.16);text-shadow:0 1px 2px rgba(74,18,51,.25)}
+.primary-btn:hover{background:linear-gradient(135deg,#f33f82,#ff754e);transform:translateY(-3px);box-shadow:0 9px 0 #c94378,0 16px 24px rgba(204,61,116,.2)}
+.primary-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #c94378}
+.secondary-btn{background:linear-gradient(135deg,#fff,#f2efff);color:#4d36ae;border:2px solid #e0d9ff;border-radius:16px}
+.soft-btn{border-radius:16px}
+.hero-art{min-height:330px}
+.island-scene{filter:drop-shadow(0 12px 18px rgba(53,71,130,.08))}
+.floating-item{border:3px solid #fff;border-radius:25px;box-shadow:0 12px 25px rgba(38,55,104,.16)}
+.panel{border:2px solid rgba(255,255,255,.96);border-radius:29px;padding:clamp(20px,3.4vw,34px);background:rgba(255,255,255,.94);box-shadow:0 18px 44px rgba(35,49,101,.12)}
+.section-head{align-items:center;margin-bottom:22px}
+.section-head h2{font-size:clamp(26px,3.2vw,38px);color:#30266f;line-height:1.12}
+.kicker{color:#7159c9;font-size:11px;letter-spacing:1.4px}
+.level-badge{border:1px solid #ffe28a;background:linear-gradient(135deg,#fff2b8,#ffe08a);border-radius:15px;box-shadow:0 4px 0 #f0d174}
+.mission-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:24px}
+.mission-step{min-height:48px;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;padding:10px 12px;border-radius:15px;border:2px solid #e1e6f4;background:linear-gradient(135deg,#f7f8ff,#fff);color:#687391;font-size:12px;font-weight:1000;box-shadow:0 4px 0 #e9edf7}
+.mission-step.active{background:linear-gradient(135deg,#e7e1ff,#f7eaff);border-color:#b7a8ff;color:#4532a6;box-shadow:0 4px 0 #c9bfff}
+.mission-step.done{background:linear-gradient(135deg,#dcfff0,#e9fff7);border-color:#8be0bd;color:#13734e;box-shadow:0 4px 0 #b9efd9}
+.reward-strip{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 22px;padding:12px;border-radius:18px;background:linear-gradient(100deg,#fff8d9,#f3f0ff,#e7f9ff);border:1px solid #e7e6f7}
+.reward-pill{padding:8px 12px;border-radius:12px;background:#fff;border:1px solid #e5e8f4;color:#4d4a83;font-size:12px;font-weight:1000;box-shadow:0 3px 0 rgba(93,96,157,.08)}
+.game-grid{grid-template-columns:minmax(0,1.08fr) minmax(290px,.82fr);gap:20px;align-items:stretch}
+.challenge-card{border:2px solid #e6e8fa;border-radius:25px;padding:clamp(18px,3vw,30px);background:linear-gradient(155deg,#fff 0%,#f4f7ff 72%,#f4efff 100%);box-shadow:inset 0 1px 0 #fff;min-height:430px}
+.challenge-card h3{font-size:clamp(19px,2vw,24px);color:#30266f;line-height:1.2}
+.challenge-card .prompt{font-size:15px;color:#52617e;line-height:1.65;max-width:520px}
+.picture-card{width:min(310px,100%);height:225px;border:3px solid #fff;border-radius:26px;background:linear-gradient(145deg,#e2f7ff,#f1edff 70%,#fff5d9);box-shadow:0 10px 24px rgba(56,70,127,.13);padding:12px}
+.picture-card svg{max-height:205px;min-height:0;filter:drop-shadow(0 4px 2px rgba(44,54,95,.06))}
+.answer-side{border:2px solid #e7e8f5;border-radius:25px;padding:clamp(18px,2.5vw,26px);background:linear-gradient(155deg,#fff,#fffdf8);box-shadow:0 8px 20px rgba(44,55,107,.06);gap:15px}
+.answer-side h3{font-size:20px;color:#332879}
+.hint-text{font-size:14px;line-height:1.65;color:#596984}
+.syllable-choice-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;margin:8px 0}
+.syllable-choice{border:2px solid #dcd5ff;border-radius:19px;background:linear-gradient(145deg,#fff,#f2efff);color:#4835a2;min-height:90px;padding:12px;font-size:29px;font-weight:1000;box-shadow:0 5px 0 #d4cafc,0 8px 15px rgba(72,53,162,.07)}
+.syllable-choice span{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px;color:#70639e}
+.syllable-choice:hover,.syllable-choice.done{background:linear-gradient(145deg,#e6fff4,#d9f9ec);border-color:#72d6ac;color:#126a49;box-shadow:0 5px 0 #b6ebd5}
+.slots{max-width:440px;gap:12px}
+.slot{min-height:82px;border:3px dashed #b7c4e2;background:#f8faff;border-radius:19px;font-size:29px;color:#4c3ba8}
+.slot.filled{border:3px solid #8d7cf0;background:linear-gradient(145deg,#f1edff,#e5e1ff);color:#3e2d9c;box-shadow:0 5px 0 #d1c8ff}
+.tiles{gap:12px;margin:12px 0}
+.syllable-tile{min-width:94px;min-height:76px;border:2px solid #edb72e;border-radius:19px;background:linear-gradient(145deg,#ffe98d,#ffce4f);color:#65440a;font-size:31px;box-shadow:0 6px 0 #d9a62c,0 8px 15px rgba(196,144,29,.12)}
+.syllable-tile:hover{transform:translateY(-3px);background:linear-gradient(145deg,#fff0a7,#ffd65f)}
+.audio-action-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;width:100%;margin:15px auto 3px}
+.audio-action-row .small-btn{min-height:58px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.35;padding:10px 9px;background:linear-gradient(145deg,#fff,#f1efff);border:2px solid #e0d9ff;border-radius:15px;color:#4d3aa7;box-shadow:0 4px 0 #e4defd;font-size:11px}
+.audio-action-row .small-btn:hover{background:#e8e3ff;border-color:#b7a8ff;transform:translateY(-2px)}
+.small-btn{border:2px solid #e2e7f2;border-radius:14px;background:#fff;color:#4e4c83;min-height:42px;padding:11px 14px;font-size:12px;box-shadow:0 3px 0 #eef0f7}
+.small-btn:hover{border-color:#b8adf7;background:#faf8ff}
+.option-list{gap:12px}
+.option-btn{min-height:84px;border:2px solid #e2e7f4;border-radius:19px;background:linear-gradient(145deg,#fff,#f8faff);font-size:23px;box-shadow:0 5px 0 #e9edf7;padding:12px 15px}
+.option-btn:hover{border-color:#a99bef;background:#f7f4ff;transform:translateY(-2px)}
+.option-btn .option-art{width:67px;height:60px;border-radius:15px;background:linear-gradient(145deg,#eaf7ff,#f2efff);padding:4px}
+.option-btn .option-art svg{height:100%;max-height:54px}
+.image-options{gap:12px}
+.image-option{min-height:145px;border:3px solid #e2e7f4;border-radius:20px;background:linear-gradient(145deg,#fff,#f3f7ff);box-shadow:0 5px 0 #e8edf7;padding:10px}
+.image-option svg{max-height:135px}
+.image-option:hover{border-color:#a99bef;background:#f8f5ff;transform:translateY(-3px)}
+.feedback{border-radius:17px;padding:14px 16px;font-size:15px;line-height:1.55;box-shadow:0 4px 0 rgba(40,70,100,.04)}
+.feedback.good{border:2px solid #9ce4c4;background:linear-gradient(120deg,#e5fff2,#f4fff9);color:#126644}
+.feedback.try{border:2px solid #f2d47c;background:linear-gradient(120deg,#fff5d7,#fffaf0);color:#79500b}
+.question-earned{border:2px solid #9de4c4;border-radius:17px;font-size:14px;padding:14px;background:linear-gradient(120deg,#e5fff2,#f3fff9)}
+.notice{border:2px solid #f0df9e;border-radius:16px;background:linear-gradient(120deg,#fff5d4,#fffaf0);color:#6f520b;font-size:13px;line-height:1.6;padding:13px 15px}
+.progress-wrap{height:13px;background:#e7ebf8;border:1px solid #dfe5f4}
+.progress-bar{background:linear-gradient(90deg,#63d8ad,#8171f1,#f56b9b)}
+.question-count{font-size:13px;color:#4f4a89}
+.score-hero{border:2px solid #fff;border-radius:30px;background:radial-gradient(circle at 50% 0%,#fff 0%,transparent 45%),linear-gradient(135deg,#e9e4ff,#dff8ff 55%,#fff0c5);box-shadow:0 10px 24px rgba(61,66,137,.08);padding:34px 22px}
+.score-emoji{font-size:68px;filter:drop-shadow(0 5px 4px rgba(83,65,149,.13))}
+.score-hero h2{color:#30266f;font-size:clamp(29px,4vw,43px)}
+.score-number{font-size:clamp(46px,7vw,70px);color:#ed4e91;text-shadow:0 3px 0 #ffe0eb}
+.score-cards{gap:15px}
+.score-card{border:2px solid #e5e8f5;border-radius:20px;background:linear-gradient(145deg,#fff,#f7f8ff);box-shadow:0 5px 0 #edf0f8;padding:18px}
+.score-card strong{color:#4c38b0;font-size:30px}
+.detail-pill{border:2px solid #e5e8f5;border-radius:17px;background:linear-gradient(145deg,#fff,#f6f8ff);padding:16px}
+.detail-pill strong{font-size:24px;color:#3d328b}
+.score-actions{gap:13px}
+.footer-note{margin-top:24px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.7);border:1px solid #fff;color:#65718f;font-size:12px}
+.settings-inline{border:2px solid #e5e8f5;border-radius:16px;box-shadow:0 5px 14px rgba(47,59,111,.05);padding:10px;background:#fff}
+.settings-inline label{color:#4e5980;font-size:11px}
+.settings-inline select{border:2px solid #e1e5f1;border-radius:11px;padding:9px;background:#fbfcff}
+.music-toggle{border:2px solid #f2dc8b;border-radius:12px;background:linear-gradient(135deg,#fff3bf,#ffe18a);padding:9px 12px}
+.guide-actions{gap:12px}
+.step{border:2px solid #e8eaf5;border-radius:17px;padding:15px;background:linear-gradient(120deg,#fff,#f9faff)}
+.step-num{width:38px;height:38px;border-radius:13px;background:linear-gradient(145deg,#e7e1ff,#dcd5ff);color:#4d36ac}
+.example-box{border:2px solid #fff;border-radius:24px;box-shadow:inset 0 0 0 1px #e5e9f6,0 8px 18px rgba(43,55,108,.05)}
+.example-art{border:2px solid #fff;border-radius:22px;box-shadow:0 7px 16px rgba(49,66,105,.1)}
+.syllable-card{border:2px solid #d6ceff;border-radius:17px;box-shadow:0 5px 0 #d7cff9}
+.problem-solving-strip{border:2px solid #e0e7f7;border-radius:21px;padding:18px}
+.problem-solving-step{border-radius:13px;background:#fff;min-height:45px}
+:focus-visible{outline:4px solid #1479ff!important;outline-offset:4px!important}
+button:disabled{filter:grayscale(.15);opacity:.58}
+@media(max-width:900px){
+ .app-shell{padding:14px 12px 28px}.hero{min-height:0}.game-grid{grid-template-columns:1fr}.challenge-card{min-height:0}.answer-side{min-width:0}.picture-card{height:205px}.picture-card svg{max-height:185px}
+}
+@media(max-width:600px){
+ .app-shell{padding:10px 8px 22px}.topbar{padding:10px;border-radius:17px}.brand{font-size:13px}.brand-mark{width:42px;height:42px;border-radius:14px}.hero{padding:25px 15px;border-radius:25px;gap:10px}.hero h1{letter-spacing:-1px}.hero p{font-size:15px}.hero-art{min-height:220px}.island-scene{max-width:280px}.panel{padding:15px;border-radius:22px}.mission-track{grid-template-columns:1fr;gap:7px}.mission-step{justify-content:flex-start;min-height:40px}.reward-strip{padding:9px;gap:7px}.reward-pill{font-size:11px;padding:7px 9px}.challenge-card,.answer-side{padding:15px;border-radius:20px}.picture-card{height:180px}.picture-card svg{max-height:160px}.syllable-choice{font-size:25px;min-height:82px;padding:9px 5px}.syllable-choice span{font-size:9px}.slots{gap:7px}.slot{min-height:68px;font-size:25px}.syllable-tile{min-width:76px;min-height:66px;font-size:27px}.audio-action-row{grid-template-columns:1fr;gap:8px}.audio-action-row .small-btn{min-height:46px;font-size:12px}.option-btn{font-size:20px;min-height:74px;padding:8px}.option-btn .option-art{width:54px;height:50px}.image-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.image-option{min-height:95px;padding:5px;border-radius:14px}.image-option svg{max-height:82px}.score-details,.score-cards{grid-template-columns:1fr}.score-hero{padding:25px 14px}.score-emoji{font-size:56px}.score-actions button{width:100%;min-width:0}.settings-inline{gap:8px}.settings-inline input[type=range]{width:85px}.guide-player button{width:100%}.problem-solving-steps{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+
+
+.exit-confirm-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(24,32,62,.72);backdrop-filter:blur(5px)}
+.exit-confirm-box{width:min(100%,510px);padding:clamp(22px,5vw,36px);border:4px solid #ffd34e;border-radius:28px;background:#fffdf7;box-shadow:0 24px 70px rgba(0,0,0,.3);text-align:center;color:#243456}
+.exit-confirm-icon{font-size:48px;margin-bottom:8px}.exit-confirm-box h2{margin:8px 0 12px;font-size:clamp(24px,4vw,32px);line-height:1.2}.exit-confirm-box p{font-size:17px;line-height:1.55}.exit-confirm-actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:22px 0 12px}.exit-confirm-actions button{min-width:130px;min-height:54px;border:3px solid transparent;border-radius:16px;font-size:20px;font-weight:900;padding:12px 24px}.exit-confirm-yes{background:#7357d9;color:white}.exit-confirm-no{background:#dff4ff;color:#243456;border-color:#7357d9!important}.exit-confirm-hint{font-size:14px!important;color:#667493;margin-bottom:0}.exit-confirm-box button:focus-visible{outline:4px solid #ff729b;outline-offset:4px}
+
+</style>
+
+<style>
+/* Butang audio Permainan 1: suku kata pertama, suku kata kedua dan perkataan penuh. */
+.syllable-audio-btn{font-size:clamp(17px,2vw,22px)!important;font-weight:900!important;min-height:56px!important;letter-spacing:.03em}
+.word-audio-btn{font-size:clamp(14px,1.5vw,18px)!important;font-weight:900!important;min-height:56px!important}
+</style>
+
+</head>
+<body>
+<div id="app" class="app-shell" aria-live="polite"></div>
+<script>
+(() => {
+'use strict';
+const WORDS = [
+  {word:'BAJU', syllables:['ba','ju'], key:'baju'},
+  {word:'BOLA', syllables:['bo','la'], key:'bola'},
+  {word:'BUKU', syllables:['bu','ku'], key:'buku'},
+  {word:'DADU', syllables:['da','du'], key:'dadu'},
+  {word:'MATA', syllables:['ma','ta'], key:'mata'},
+  {word:'TOPI', syllables:['to','pi'], key:'topi'}
+];
+const TITLES = ['Misi Cantum Suku Kata','Detektif Perkataan','Pemburu Gambar Harta Karun'];
+const app = document.getElementById('app');
+const state = {
+  screen:'cover', level:1, qIndex:0,
+  scores:[0,0,0], firstTry:[0,0,0], helpCount:[0,0,0], errors:[0,0,0], bonusStars:0, streak:0, bestStreak:0,
+  qAttempts:0, qUsedHelp:false, qHelpCounted:false, questionDone:false,
+  slots:[null,null], selectedTile:null, shuffledTiles:[], options:[],
+  feedback:null, voices:[], voiceURI:'', voiceStatus:'', rate:0.8,
+  musicOn:true, musicVolume:0.13, musicStarted:false, isSpeaking:false, audioCtx:null, musicGain:null,
+  musicTimer:null, musicStep:0, modal:null, sessionStarted:false,
+  guideIsSpeaking:false, guidePaused:false, guidePlaybackLevel:null, speechToken:0
+};
+
+function art(word){
+  const common='xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 145" role="img" aria-label="Gambar '+word.toLowerCase()+'"';
+  const drawings={
+  BAJU:`<svg ${common}><ellipse cx="90" cy="126" rx="49" ry="8" fill="#cdd7ee" opacity=".55"/><path d="M62 24 43 33 24 60 43 75 57 58 52 116 Q90 130 128 116 L123 58 137 75 156 60 137 33 118 24 104 38 76 38Z" fill="#ff729b" stroke="#cb477b" stroke-width="4" stroke-linejoin="round"/><path d="M62 24 76 38 90 50 104 38 118 24 106 18 90 32 74 18Z" fill="#fff3cc" stroke="#cb477b" stroke-width="3" stroke-linejoin="round"/><path d="M76 38 90 50 104 38" fill="none" stroke="#fff" stroke-width="3"/><path d="M90 51v62" stroke="#ffd9e5" stroke-width="3" stroke-linecap="round"/><circle cx="98" cy="69" r="2.6" fill="#fff5c8"/><circle cx="98" cy="85" r="2.6" fill="#fff5c8"/><circle cx="98" cy="101" r="2.6" fill="#fff5c8"/><path d="M40 63 52 67M128 67l12-4" stroke="#ffb7ce" stroke-width="3" stroke-linecap="round"/></svg>`,
+  BOLA:`<svg ${common}><ellipse cx="90" cy="123" rx="50" ry="8" fill="#cdd7ee" opacity=".55"/><circle cx="90" cy="70" r="50" fill="#ffca4f" stroke="#d68a25" stroke-width="4"/><path d="m90 48 16 12-6 19H80l-6-19Z" fill="#fff" stroke="#3a4f85" stroke-width="3" stroke-linejoin="round"/><path d="m90 48 0-26M106 60l25-8M100 79l14 25M80 79l-14 25M74 60 49 52" fill="none" stroke="#3a4f85" stroke-width="4" stroke-linecap="round"/><path d="M90 22 72 31 74 46M131 52l5 20-20 7M114 104l-17 14-15-14M66 104 48 94 49 72M49 52l8-17 15-4" fill="#66d9b1" stroke="#3a4f85" stroke-width="3" stroke-linejoin="round"/><circle cx="72" cy="64" r="3" fill="#fff"/><circle cx="119" cy="86" r="3" fill="#fff"/></svg>`,
+  BUKU:`<svg ${common}><ellipse cx="91" cy="124" rx="54" ry="8" fill="#cdd7ee" opacity=".55"/><path d="M25 37 Q54 25 88 42 L88 115 Q54 96 25 108Z" fill="#7b68e8" stroke="#5145b7" stroke-width="4" stroke-linejoin="round"/><path d="M88 42 Q120 25 155 37 L155 108 Q122 96 88 115Z" fill="#56cdb0" stroke="#278e80" stroke-width="4" stroke-linejoin="round"/><path d="M88 42v73" stroke="#fff6cd" stroke-width="5"/><path d="M39 51q21-7 36 1M39 64q21-7 36 1M39 77q21-7 36 1M102 51q21-7 39 1M102 64q21-7 39 1M102 77q21-7 39 1" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/><path d="M55 31q12-10 23 4l-8 13-12-3Z" fill="#ffd45d" stroke="#5145b7" stroke-width="3"/><circle cx="61" cy="36" r="2.5" fill="#fff"/></svg>`,
+  DADU:`<svg ${common}><ellipse cx="92" cy="125" rx="49" ry="8" fill="#cdd7ee" opacity=".55"/><path d="M42 40 92 17 143 40 92 63Z" fill="#fff3cf" stroke="#9e6d43" stroke-width="4" stroke-linejoin="round"/><path d="M42 40 92 63 92 123 42 97Z" fill="#ff875f" stroke="#9e6d43" stroke-width="4" stroke-linejoin="round"/><path d="M92 63 143 40 143 97 92 123Z" fill="#ffd34e" stroke="#9e6d43" stroke-width="4" stroke-linejoin="round"/><g fill="#5c4264"><circle cx="58" cy="54" r="4"/><circle cx="76" cy="64" r="4"/><circle cx="58" cy="80" r="4"/><circle cx="76" cy="90" r="4"/><circle cx="106" cy="76" r="4"/><circle cx="129" cy="55" r="4"/><circle cx="129" cy="82" r="4"/><circle cx="106" cy="105" r="4"/></g><path d="M57 37 91 22 126 38" fill="none" stroke="#fff" stroke-width="3" opacity=".8" stroke-linecap="round"/></svg>`,
+  MATA:`<svg ${common}><ellipse cx="90" cy="123" rx="53" ry="8" fill="#cdd7ee" opacity=".55"/><path d="M20 72Q51 25 88 66Q50 112 20 72Z" fill="#fff" stroke="#6b53b8" stroke-width="4" stroke-linejoin="round"/><path d="M92 66Q130 25 160 72Q129 112 92 66Z" fill="#fff" stroke="#6b53b8" stroke-width="4" stroke-linejoin="round"/><circle cx="55" cy="69" r="17" fill="#6bc7e9" stroke="#33799e" stroke-width="3"/><circle cx="126" cy="69" r="17" fill="#6bc7e9" stroke="#33799e" stroke-width="3"/><circle cx="55" cy="69" r="8" fill="#263b69"/><circle cx="126" cy="69" r="8" fill="#263b69"/><circle cx="50" cy="63" r="4" fill="#fff"/><circle cx="121" cy="63" r="4" fill="#fff"/><path d="M28 48 20 39M40 39 37 27M54 35 55 22M145 48 154 39M133 39 136 27M119 35 118 22" fill="none" stroke="#6b53b8" stroke-width="4" stroke-linecap="round"/><path d="M31 88q23 18 46 0M105 88q23 18 46 0" fill="none" stroke="#ff8aa8" stroke-width="3" stroke-linecap="round" opacity=".6"/></svg>`,
+  TOPI:`<svg ${common}><ellipse cx="91" cy="123" rx="53" ry="8" fill="#cdd7ee" opacity=".55"/><path d="M40 78Q40 34 81 25Q117 16 133 53L139 79Z" fill="#ffb84f" stroke="#b66c2f" stroke-width="4" stroke-linejoin="round"/><path d="M51 74Q82 89 138 75L157 91Q123 110 71 99Q47 95 31 87Z" fill="#ff729b" stroke="#b84578" stroke-width="4" stroke-linejoin="round"/><path d="M81 26Q89 50 89 77" fill="none" stroke="#fff0bc" stroke-width="4" stroke-linecap="round"/><path d="M69 45Q83 39 98 44" fill="none" stroke="#d98939" stroke-width="3" stroke-linecap="round"/><circle cx="104" cy="65" r="6" fill="#fff0bc" stroke="#b66c2f" stroke-width="2"/><path d="M43 85Q82 103 135 87" fill="none" stroke="#ffb5cd" stroke-width="3" stroke-linecap="round"/></svg>`
+  };
+  return drawings[word] || `<svg ${common}><circle cx="90" cy="70" r="48" fill="#ddd"/><text x="90" y="85" text-anchor="middle" font-size="28">${word}</text></svg>`;
+}
+function wordChip(w){return `<div class="word-chip">${art(w.word)}<strong>${w.word}</strong></div>`}
+function optionArt(w){return `<span class="option-art">${art(w.word)}</span>`}
+function settingsBar(){
+  return `<div class="settings-inline" aria-label="Tetapan audio">
+    <label for="rateSelect">Kelajuan suara</label><select id="rateSelect" aria-label="Kelajuan suara"><option value="0.6" ${state.rate===0.6?'selected':''}>0.6× Sangat perlahan</option><option value="0.7" ${state.rate===0.7?'selected':''}>0.7× Perlahan</option><option value="0.8" ${state.rate===0.8?'selected':''}>0.8× Jelas</option><option value="0.9" ${state.rate===0.9?'selected':''}>0.9×</option><option value="1" ${state.rate===1?'selected':''}>1.0× Biasa</option><option value="1.1" ${state.rate===1.1?'selected':''}>1.1× Lebih pantas</option><option value="1.2" ${state.rate===1.2?'selected':''}>1.2× Pantas</option><option value="1.3" ${state.rate===1.3?'selected':''}>1.3× Sangat pantas</option></select>
+    <label for="musicVol">Muzik</label><input id="musicVol" type="range" min="0" max="18" value="${Math.round(state.musicVolume*100)}" aria-label="Kelantangan muzik" title="Kelantangan muzik"><button class="music-toggle" data-action="toggleMusic" aria-pressed="${state.musicOn}">${state.musicOn?'♫ Muzik: Hidup':'♫ Muzik: Mati'}</button>
+    <span class="sr-only" id="voice-status">${state.voices.length?'Suara bacaan automatik tersedia.':'Suara bacaan belum tersedia.'}</span>
+  </div>`;
+}
+function topbar(){return `<div class="topbar"><div class="brand"><div class="brand-mark">🗺️</div><div>MISI PENGEMBARAAN MEMBACA <small>Permainan membaca</small></div></div><div class="top-actions">${state.screen==='cover'?'':`<span class="shortcut-note">M: muzik • A: main/jeda arahan</span>`}</div></div>`}
+function shell(content,footer=true){const status=state.screen==='cover'?'':`<div class="voice-status">${voiceStatusNote()}</div>`;app.innerHTML=topbar()+status+`<main class="screen">${content}</main>`+(footer?`<p class="footer-note">Belajar perlahan-lahan, cuba lagi, dan raikan setiap kejayaan! ⭐</p>`:'');}
+function renderCover(){
+  state.screen='cover';
+  const content=`<section class="hero">
+    <div class="hero-copy"><span class="eyebrow">⭐ BBM digital • Misi penyelesaian masalah</span><h1>MISI PENGEMBARAAN <span>MEMBACA</span></h1><div class="hero-subtitle">Lihat, Cantum dan Baca!</div><p>Jom belajar membaca! Cantumkan suku kata, cari gambar dan kumpulkan bintang untuk membuka peti harta karun.</p><div class="hero-buttons"><button class="primary-btn" data-action="start" autofocus aria-label="Mula permainan sekarang">▶ MULA PERMAINAN</button></div><p style="font-size:12px;margin-top:15px">3 permainan • 18 soalan • 6 perkataan mudah</p><p style="font-size:13px;font-weight:800;color:#5141a0">🧩 Cantum suku kata • ⭐ Kumpul bintang • 🗝️ Buka peti harta karun</p></div>
+    <div class="hero-art"><div class="island-scene"><div class="sun"></div><div class="cloud a">☁️</div><div class="cloud b">☁️</div><div class="island"></div><div class="treasure"><div class="treasure-lid"></div><div class="treasure-base"></div><div class="treasure-lock"></div></div><div class="floating-item one">${art('BAJU')}</div><div class="floating-item two">${art('BOLA')}</div><div class="floating-item three">${art('BUKU')}</div></div></div>
+  </section>`;
+  shell(content+`<section style="margin-top:16px" aria-label="Tetapan audio"><h2 style="font-size:18px;margin:0 0 8px">Tetapan audio</h2>${settingsBar()}</section>`);
+}
+function renderHowTo(){
+ state.screen='howto';
+ shell(`<section class="panel"><div class="section-head"><div><div class="kicker">Pengenalan</div><h2>Cara bermain</h2><p>Permainan ini mempunyai tiga peringkat. Setiap peringkat mengandungi enam soalan.</p></div><div class="level-badge">🎒 Misi membaca</div></div><div class="steps">
+ <div class="step"><div class="step-num">1</div><div><h3>Misi Cantum Suku Kata</h3><p>Lihat gambar, pilih dua suku kata, letakkan mengikut urutan dan baca perkataan penuh.</p></div></div>
+ <div class="step"><div class="step-num">2</div><div><h3>Detektif Perkataan</h3><p>Lihat gambar, baca tiga pilihan perkataan dan pilih perkataan yang sepadan.</p></div></div>
+ <div class="step"><div class="step-num">3</div><div><h3>Pemburu Gambar Harta Karun</h3><p>Baca perkataan dahulu, kemudian pilih gambar yang betul. Minta petunjuk suara jika perlu.</p></div></div>
+ <div class="step"><div class="step-num">⭐</div><div><h3>Kumpulkan bintang</h3><p>Selepas setiap permainan, lihat skor kamu. Tekan “Permainan Seterusnya” untuk meneruskan misi.</p></div></div></div><div class="guide-actions"><button class="primary-btn" data-action="backCover">← KEMBALI KE MENU UTAMA</button><button class="secondary-btn" data-action="start">MULA PERMAINAN ▶</button></div></section>`);
+}
+function guideData(level){
+ const data={
+  1:{subtitle:'Belajar mencantumkan dua suku kata KV.',problem:'Peti harta karun masih terkunci. Gunakan gambar sebagai petunjuk, cantumkan dua suku kata dan uji sama ada perkataan yang dibina betul.',example:WORDS[0],steps:[['1','Kenal pasti gambar.','Perhatikan gambar dan fikirkan nama objek tersebut.'],['2','Dengar dan sebut.','Pilih suku kata pertama dan kedua. Gunakan butang “Dengar Suku Kata” untuk mendengar kedua-duanya.'],['3','Cuba strategi.','Letakkan suku kata pertama di ruang kiri dan suku kata kedua di ruang kanan.'],['4','Baca hasil.','Baca perkataan penuh selepas kedua-dua suku kata dicantumkan.'],['5','Semak dan baiki.','Tekan “Semak Jawapan”. Jika belum betul, susun semula suku kata dan cuba lagi.']]},
+  2:{subtitle:'Baca perkataan dan padankan dengan gambar.',problem:'Pengembara mempunyai gambar tetapi perlu mencari perkataan yang tepat. Bandingkan pilihan, gunakan petunjuk gambar dan pilih jawapan yang menyelesaikan cabaran.',example:WORDS[1],steps:[['1','Kenal pasti petunjuk.','Perhatikan gambar besar yang muncul pada skrin.'],['2','Baca pilihan.','Baca ketiga-tiga perkataan dengan perlahan.'],['3','Fikir dan bandingkan.','Padankan bunyi dan ejaan perkataan dengan gambar. Jangan meneka—cuba baca dahulu.'],['4','Pilih jawapan.','Klik perkataan yang kamu fikir paling tepat.'],['5','Semak dan baiki.','Jawapan betul mendapat bintang. Jika salah, baca pilihan sekali lagi dan cuba semula.']]},
+  3:{subtitle:'Baca perkataan dan cari gambar yang betul.',problem:'Peti terakhir memaparkan perkataan rahsia. Baca perkataan itu, cari gambar yang sepadan dan semak pilihan sebelum mengambil kunci.',example:WORDS[5],steps:[['1','Baca perkataan.','Lihat perkataan yang dipaparkan dan baca dengan kuat.'],['2','Perhatikan petunjuk.','Lihat ketiga-tiga gambar pilihan.'],['3','Bina penyelesaian.','Gunakan bacaan perkataan untuk memilih gambar yang sepadan.'],['4','Minta bantuan jika perlu.','Tekan “Dengar Suku Kata” untuk mendengar suku kata satu demi satu.'],['5','Semak dan kumpulkan kunci.','Selesaikan keenam-enam cabaran untuk membuka peti harta karun.']]}
+ };
+ return data[level];
+}
+function guidePlaybackButton(level){
+ const active=state.guideIsSpeaking&&state.guidePlaybackLevel===level;
+ const label=active?(state.guidePaused?'▶ SAMBUNG PANDUAN':'⏸ JEDA PANDUAN'):'▶ DENGAR CARA BERMAIN';
+ return `<button class="secondary-btn" data-action="toggleGuide" data-level="${level}" aria-pressed="${active&&!state.guidePaused}" aria-label="Mainkan atau jedakan panduan permainan ${level}">${label}</button>`;
+}
+function renderInstructions(level){
+ stopSpeechPlayback();
+ state.screen='instructions'; state.level=level;
+ const d=guideData(level); const title=TITLES[level-1];
+ let example;
+ if(level===1){example=`<div class="example-art">${art(d.example.word)}</div><div class="example-label">Contoh: lihat gambar dan cantumkan</div><div class="syllable-pair"><div class="syllable-card">${d.example.syllables[0]}</div><span class="plus">+</span><div class="syllable-card">${d.example.syllables[1]}</div></div><div class="example-answer">${d.example.word}</div>`;}
+ else if(level===2){example=`<div class="example-art">${art(d.example.word)}</div><div class="example-label">Contoh gambar</div><div class="option-list" style="width:100%;max-width:285px"><div class="option-btn" style="min-height:auto"><span class="option-art">${art('BAJU')}</span><span>BAJU</span></div><div class="option-btn correct" style="min-height:auto"><span class="option-art">${art('BOLA')}</span><span>BOLA ✓</span></div><div class="option-btn" style="min-height:auto"><span class="option-art">${art('BUKU')}</span><span>BUKU</span></div></div><div class="example-label">Contoh sahaja — permainan sebenar berbeza</div>`;}
+ else {example=`<div class="word-display">${d.example.word}</div><div class="example-label">Baca dahulu, kemudian cari gambar</div><div style="display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap"><div class="picture-card small">${art('BAJU')}</div><div class="picture-card small" style="border:3px solid #67d2a6">${art('TOPI')}</div><div class="picture-card small">${art('DADU')}</div></div><div class="example-label">Contoh sahaja — gambar jawapan akan dirawakkan</div>`;}
+ const steps=d.steps.map(s=>`<div class="step"><div class="step-num">${s[0]}</div><div><h3>${s[1]}</h3><p>${s[2]}</p></div></div>`).join('');
+ const content=`<section class="panel"><div class="section-head"><div><div class="kicker">Panduan sebelum bermain • Peringkat ${level} daripada 3</div><h2>Cara Bermain ${level}: ${title}</h2><p>${d.subtitle} Baca langkah berikut atau gunakan butang main/jeda untuk mendengar panduan.</p></div><div class="level-badge">⏱️ 10 minit</div></div><div class="instruction-grid"><div class="steps">${steps}</div><div class="example-box">${example}<p style="font-size:12px;line-height:1.5;color:#66708c;margin:0">Gunakan gambar sebagai petunjuk. Cuba dahulu, kemudian semak jawapan.</p></div></div><div class="problem-solving-strip"><div><h3>🧠 Misi penyelesaian masalah</h3><p>${d.problem}</p></div><div class="problem-solving-steps"><div class="problem-solving-step"><b>1</b> Kenal pasti</div><div class="problem-solving-step"><b>2</b> Cari petunjuk</div><div class="problem-solving-step"><b>3</b> Cuba strategi</div><div class="problem-solving-step"><b>4</b> Semak dan baiki</div></div></div><div class="guide-actions guide-player">${guidePlaybackButton(level)}<button class="primary-btn" data-action="beginLevel" data-level="${level}">MULA PERMAINAN ${level} ▶</button>${level===1?`<button class="small-btn" data-action="backCover">← Menu Utama</button>`:''}</div><div class="notice" style="margin-top:15px">Tidak mengapa jika tersalah. Kenal pasti petunjuk, cuba cara lain dan semak semula. Suara permainan akan menyebut setiap suku kata apabila kamu meletakkannya.</div></section>`;
+ shell(content);
+}
+function shuffled(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function resetQuestion(){state.qAttempts=0;state.qUsedHelp=false;state.qHelpCounted=false;state.questionDone=false;state.feedback=null;state.slots=[null,null];state.selectedTile=null;const w=WORDS[state.qIndex];state.shuffledTiles=shuffled(w.syllables.map((s,i)=>({id:String(i),text:s,index:i})));state.options=[];}
+function beginLevel(level){stopSpeechPlayback();state.level=level;state.qIndex=0;resetQuestion();state.screen='game';renderGame();}
+function progressHeader(){const track=TITLES.map((t,i)=>`<div class="mission-step ${i+1<state.level?'done':i+1===state.level?'active':''}">${i+1<state.level?'✓':i===0?'🧩':i===1?'🖼️':'🗝️'} ${t}</div>`).join('');return `<div class="mission-track" aria-label="Laluan misi">${track}</div><div class="section-head"><div><div class="kicker">Misi penyelesaian masalah • Permainan ${state.level} daripada 3</div><h2>${TITLES[state.level-1]}</h2><p>${state.level===1?'Lihat gambar, dengar bunyi, cantumkan suku kata dan buka laluan seterusnya.':state.level===2?'Jadilah detektif perkataan: bandingkan petunjuk gambar dan pilih padanan.':'Baca perkataan rahsia, pilih gambar dan kumpulkan kunci peti harta karun.'}</p></div><div class="game-meta"><span class="question-count">Cabaran ${state.qIndex+1} daripada 6</span><div class="progress-wrap"><div class="progress-bar" style="width:${((state.qIndex+1)/6)*100}%"></div></div></div></div><div class="reward-strip"><span class="reward-pill">⭐ Skor: ${state.scores.reduce((a,b)=>a+b,0)}</span><span class="reward-pill">✨ Bintang bonus: ${state.bonusStars}</span><span class="reward-pill">🔥 Rentetan betul: ${state.streak}</span><span class="reward-pill">🏅 Rekod rentetan: ${state.bestStreak}</span></div>`;}
+function feedbackHTML(){if(!state.feedback)return '';return `<div class="feedback ${state.feedback.type}"><span>${state.feedback.type==='good'?'⭐':state.feedback.type==='try'?'💡':'ℹ️'}</span><span>${state.feedback.text}</span></div>`;}
+function game1Markup(w){
+ const used=state.slots.filter(x=>x!==null);
+ const tiles=state.shuffledTiles.filter(t=>!used.includes(t.id)).map(t=>`<button class="syllable-tile ${state.selectedTile===t.id?'selected':''}" draggable="true" data-action="tile" data-id="${t.id}" aria-label="Pilih suku kata ${t.text}">${t.text}</button>`).join('');
+ const slot=(i)=>{const id=state.slots[i];const tile=id===null?null:state.shuffledTiles.find(t=>t.id===id);return `<button class="slot ${tile?'filled':''}" data-action="slot" data-slot="${i}" data-drop="true" aria-label="${tile?'Suku kata '+tile.text+' pada ruang '+(i+1):'Ruang suku kata '+(i+1)}">${tile?tile.text:`<span class="slot-label">Ruang ${i+1}</span>`}</button>`;};
+ const success=state.questionDone?`<div class="question-earned">✅ Mata soalan: 1/1<br>Skor Permainan 1: ${state.scores[0]}/6 • Perkataan: ${w.word}</div><button class="primary-btn" data-action="nextQuestion">${state.qIndex===5?'LIHAT SKOR PERMAINAN 1':'SOALAN SETERUSNYA ▶'}</button>`:'';
+ const actions=state.questionDone?'':`<button class="primary-btn" data-action="checkAnswer">SEMAK JAWAPAN ✓</button><button class="small-btn" data-action="clearSlots">KOSONGKAN RUANG</button>`;
+ return `<div class="game-grid"><section class="challenge-card"><h3>Lihat gambar. Apakah perkataannya?</h3><p class="prompt">Pilih kepingan suku kata dan letakkan mengikut urutan.</p><div class="picture-card">${art(w.word)}</div><div class="syllable-pair"><span class="example-label">Pilih suku kata mengikut urutan</span></div><div class="syllable-choice-row"><button class="syllable-choice ${state.slots[0]!==null?'done':''}" data-action="chooseSyllable" data-index="0"><span>Suku kata pertama</span>${w.syllables[0]}</button><button class="syllable-choice ${state.slots[1]!==null?'done':''}" data-action="chooseSyllable" data-index="1"><span>Suku kata kedua</span>${w.syllables[1]}</button></div><div class="slots">${slot(0)}<div class="plus">+</div>${slot(1)}</div><div class="tiles">${tiles||'<span class="hint-text">Semua kepingan telah dipilih. Semak susunan kamu.</span>'}</div><p class="hint-text">Petua: klik kepingan, kemudian klik ruang. Kamu juga boleh seret kepingan ke ruang.</p><div class="audio-action-row" aria-label="Butang audio suku kata dan perkataan"><button type="button" class="small-btn syllable-audio-btn" data-action="hearSyllable" data-index="0" aria-label="Dengar suku kata pertama: ${w.syllables[0]}">🔊 DENGAR “${w.syllables[0]}”</button><button type="button" class="small-btn syllable-audio-btn" data-action="hearSyllable" data-index="1" aria-label="Dengar suku kata kedua: ${w.syllables[1]}">🔊 DENGAR “${w.syllables[1]}”</button><button type="button" class="small-btn word-audio-btn" data-action="hearWord" aria-label="Dengar perkataan penuh: ${w.word}">🔊 DENGAR PERKATAAN PENUH “${w.word}”</button></div></section><aside class="answer-side"><h3>Langkah menjawab</h3><p class="hint-text">1. Lihat gambar.<br>2. Pilih suku kata pertama dan letakkan di ruang kiri.<br>3. Pilih suku kata kedua dan letakkan di ruang kanan.<br>4. Gunakan butang audio berasingan untuk setiap suku kata, atau butang “Dengar Perkataan Penuh”.<br>5. Tekan “Semak Jawapan”. Jika salah, cuba susun semula.</p>${feedbackHTML()}${success}${actions}<div class="notice">Jawapan betul mendapat satu mata. Kamu boleh mencuba semula jika jawapan belum betul.</div></aside></div>`;
+}
+function initOptionsForCurrent(){
+ const target=WORDS[state.qIndex];
+ if(state.options.length===0){let others=shuffled(WORDS.filter(w=>w.word!==target.word)).slice(0,2);state.options=shuffled([target,...others]);}
+}
+function game2Markup(w){
+ initOptionsForCurrent();
+ const opts=state.options.map(opt=>`<button class="option-btn" data-action="answerWord" data-word="${opt.word}" ${state.questionDone?'disabled':''}>${optionArt(opt)}<span>${opt.word}</span></button>`).join('');
+ return `<div class="game-grid"><section class="challenge-card"><h3>Perhatikan gambar</h3><p class="prompt">Baca ketiga-tiga pilihan perkataan, kemudian pilih yang betul.</p><div class="picture-card">${art(w.word)}</div><span class="example-label">Apakah perkataan yang sepadan?</span><div class="audio-action-row" aria-label="Butang audio"><button class="small-btn" data-action="hearSyllable" data-index="0" aria-label="Dengar suku kata pertama">🔊 DENGAR SUKU KATA PERTAMA</button><button class="small-btn" data-action="hearSyllable" data-index="1" aria-label="Dengar suku kata kedua">🔊 DENGAR SUKU KATA KEDUA</button><button class="small-btn" data-action="hearWord" aria-label="Dengar perkataan penuh">🔊 DENGAR PERKATAAN PENUH</button></div></section><aside class="answer-side"><h3>Pilih satu perkataan</h3><p class="hint-text">Baca pilihan dengan perlahan. Gambar ialah petunjuk, tetapi kamu masih perlu membaca.</p><div class="option-list">${opts}</div>${feedbackHTML()}${state.questionDone?`<div class="question-earned">✅ Mata soalan: 1/1<br>Skor Permainan 2: ${state.scores[1]}/6 • Jawapan: ${w.word}</div><button class="primary-btn" data-action="nextQuestion">${state.qIndex===5?'LIHAT SKOR PERMAINAN 2':'SOALAN SETERUSNYA ▶'}</button>`:`<div class="notice">Ingat: baca dahulu, kemudian pilih. Jawapan salah boleh dicuba semula.</div>`}<button class="small-btn" data-action="hearGuideDuring">🔊 DENGAR ARAHAN SEKALI LAGI</button></aside></div>`;
+}
+function game3Markup(w){
+ initOptionsForCurrent();
+ const opts=state.options.map(opt=>`<button class="image-option" data-action="answerPicture" data-word="${opt.word}" aria-label="Pilih gambar ${opt.word.toLowerCase()}" ${state.questionDone?'disabled':''}>${art(opt.word)}</button>`).join('');
+ return `<div class="game-grid"><section class="challenge-card"><h3>Baca perkataan ini</h3><p class="prompt">Baca perkataan dengan kuat. Kemudian cari gambar yang sepadan.</p><div class="word-display">${w.word}</div><div class="audio-action-row" aria-label="Butang audio"><button class="small-btn" data-action="hearSyllable" data-index="0" aria-label="Dengar suku kata pertama">🔊 DENGAR SUKU KATA PERTAMA</button><button class="small-btn" data-action="hearSyllable" data-index="1" aria-label="Dengar suku kata kedua">🔊 DENGAR SUKU KATA KEDUA</button><button class="small-btn" data-action="hearWord" aria-label="Dengar perkataan penuh">🔊 DENGAR PERKATAAN PENUH</button></div><p class="hint-text" style="margin-top:13px">Gunakan bantuan suara hanya jika kamu memerlukannya.</p></section><aside class="answer-side"><h3>Pilih gambar yang betul</h3><p class="hint-text">Tiga gambar akan muncul. Pilih gambar yang menunjukkan perkataan <strong>${w.word}</strong>.</p><div class="image-options">${opts}</div>${feedbackHTML()}${state.questionDone?`<div class="question-earned">🗝️ Mata soalan: 1/1<br>Skor Permainan 3: ${state.scores[2]}/6 • Kunci dikumpulkan!</div><button class="primary-btn" data-action="nextQuestion">${state.qIndex===5?'LIHAT SKOR AKHIR':'SOALAN SETERUSNYA ▶'}</button>`:`<div class="notice">Baca dahulu sebelum memilih gambar. Jika perlu, tekan butang audio untuk mendengar suku kata.</div>`}<button class="small-btn" data-action="hearGuideDuring">🔊 DENGAR ARAHAN SEKALI LAGI</button></aside></div>`;
+}
+function renderGame(){
+ state.screen='game';const w=WORDS[state.qIndex];
+ const gameMarkup=state.level===1?game1Markup(w):state.level===2?game2Markup(w):game3Markup(w);
+ shell(`<section class="panel">${progressHeader()}${gameMarkup}<div style="margin-top:17px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><span class="hint-text">⭐ Skor semasa: ${state.scores.reduce((a,b)=>a+b,0)} mata</span><span class="hint-text">Gunakan butang audio jika mahu mendengar bantuan sebutan.</span></div></section>`);
+}
+function renderScore(level){
+ state.screen='score';state.level=level;const idx=level-1;const score=state.scores[idx],first=state.firstTry[idx],help=state.helpCount[idx],errors=state.errors[idx];
+ const total=state.scores.slice(0,level).reduce((a,b)=>a+b,0);const max=level*6;
+ const msg=score>=5?'Hebat! Kamu semakin mahir membaca!':score>=3?'Syabas! Teruskan berlatih, kamu semakin berjaya!':'Bagus kerana mencuba! Mari berlatih lagi dengan perlahan-lahan.';
+ const content=`<section class="panel"><div class="score-hero"><div class="score-emoji">${score>=5?'🏆':'⭐'}</div><div class="kicker">Peringkat ${level} selesai</div><h2>Keputusan Permainan ${level}</h2><p>${TITLES[idx]}</p><div class="score-number">${score}/6</div><p>${msg}</p></div><div class="score-details"><div class="detail-pill"><strong>${first}</strong><span>Betul pada percubaan pertama</span></div><div class="detail-pill"><strong>${help}</strong><span>Soalan perlukan bantuan / cuba lagi</span></div><div class="detail-pill"><strong>${'⭐'.repeat(Math.max(1,score))}</strong><span>Bintang untuk peringkat ini</span></div></div><div class="score-cards">${Array.from({length:level},(_,i)=>`<div class="score-card"><div class="s-icon">${i===level-1?'🎯':'✅'}</div><span>Permainan ${i+1}</span><strong>${state.scores[i]}/6</strong><span>${TITLES[i]}</span></div>`).join('')}</div><div class="notice">Jumlah terkumpul setakat ini: <strong>${total}/${max}</strong>. Skor dikira daripada jawapan yang berjaya diselesaikan; rekod percubaan pertama dipaparkan berasingan.</div><div class="score-actions"><button class="secondary-btn" data-action="replayLevel" data-level="${level}">↻ ULANG PERMAINAN ${level}</button><button class="primary-btn" data-action="nextLevel" data-level="${level}">${level<3?'PERMAINAN SETERUSNYA ▶':'LIHAT SKOR AKHIR ▶'}</button></div></section>`;
+ shell(content);
+}
+function renderFinal(){
+ state.screen='final';const total=state.scores.reduce((a,b)=>a+b,0);const first=state.firstTry.reduce((a,b)=>a+b,0);const helped=state.helpCount.reduce((a,b)=>a+b,0);const errors=state.errors.reduce((a,b)=>a+b,0);
+ let msg=total>=15?'Hebat! Kamu semakin mahir membaca perkataan!':total>=10?'Syabas! Teruskan berlatih. Kamu semakin berjaya!':'Bagus kerana mencuba! Mari belajar lagi supaya kamu lebih yakin membaca!';
+ const content=`<section class="panel"><div class="score-hero"><div class="score-emoji">🎁✨</div><div class="kicker">Misi selesai</div><h2>TAHNIAH, PENGEMBARA!</h2><p>Peti harta karun berjaya dibuka. Kamu telah berusaha dengan hebat!</p><div class="score-number">${total}/18</div><p>${msg}</p></div><div class="score-cards">${TITLES.map((t,i)=>`<div class="score-card"><div class="s-icon">${i===0?'🧩':i===1?'🖼️':'🗝️'}</div><span>Permainan ${i+1}</span><strong>${state.scores[i]}/6</strong><span>${t}</span></div>`).join('')}</div><div class="score-details"><div class="detail-pill"><strong>${total}/18</strong><span>Jumlah jawapan betul</span></div><div class="detail-pill"><strong>${first}</strong><span>Betul pada percubaan pertama</span></div><div class="detail-pill"><strong>${helped}</strong><span>Soalan dengan bantuan / cubaan semula</span></div></div><div class="notice" style="margin-top:17px">Perkataan sasaran sesi ini: BAJU • BOLA • BUKU • DADU • MATA • TOPI. Minta guru berlatih bersama jika ada perkataan yang masih sukar.</div><div class="score-actions"><button class="primary-btn" data-action="home">⌂ KE MENU UTAMA</button></div></section>`;
+ shell(content);
+}
+function render(){if(state.screen==='cover')renderCover();else if(state.screen==='howto')renderHowTo();else if(state.screen==='instructions')renderInstructions(state.level);else if(state.screen==='game')renderGame();else if(state.screen==='score')renderScore(state.level);else if(state.screen==='final')renderFinal();}
+
+function normalizedVoiceLang(v){return String(v&&v.lang||'').toLowerCase().replace(/_/g,'-');}
+function localeGroup(v){const lang=normalizedVoiceLang(v);if(lang==='ms-my'||lang.startsWith('ms-my-'))return 'ms';if(lang==='id-id'||lang.startsWith('id-id-'))return 'id';return '';}
+// Pilihan terhad kepada suara Bahasa Malaysia (ms-MY) dan Bahasa Indonesia (id-ID).
+function isAllowedVoice(v){return Boolean(localeGroup(v));}
+function voiceGender(v){
+ const n=String(v&&v.name||'').toLowerCase();
+ if(/\b(female|woman|girl)\b|jenny|aria|yasmin|suria|siti|intan|aisyah|ain(a|ah)|nabila|farah|sarah|sofia|aly(a|ah)|amira|nur|mimi|putri|melati|dewi/.test(n))return 'female';
+ if(/\b(male|man|boy)\b|guy|christopher|rizwan|osman|ahmad|azlan|hamdan|hafiz|amir|izwan|hazim|faiz|hakim|iskandar|firdaus|rahman|adam|arif|syafiq|danish/.test(n))return 'male';
+ return 'unknown';
+}
+function voiceQualityScore(v){
+ const n=String(v&&v.name||'').toLowerCase();let score=0;
+ if(/natural|neural/.test(n))score+=100;
+ if(/online|premium/.test(n))score+=35;
+ if(/standard/.test(n))score+=5;
+ if(v&&v.localService)score+=4;
+ if(localeGroup(v)==='ms')score+=10;
+ return score;
+}
+function orderVoiceCandidates(list){return [...list].sort((a,b)=>voiceQualityScore(b)-voiceQualityScore(a));}
+function getSupportedVoiceChoices(all){
+ const allowed=orderVoiceCandidates((all||[]).filter(isAllowedVoice));
+ if(!allowed.length)return [];
+ // Gunakan hanya satu suara. Utamakan Bahasa Malaysia; gunakan Bahasa Indonesia jika ms-MY tiada.
+ const malaysian=orderVoiceCandidates(allowed.filter(v=>localeGroup(v)==='ms'));
+ const indonesian=orderVoiceCandidates(allowed.filter(v=>localeGroup(v)==='id'));
+ const pool=malaysian.length?malaysian:indonesian;
+ return pool.length?[pool[0]]:[];
+}
+function preferredVoice(list){return list[0]||null;}
+function chosenVoice(){return state.voices.find(v=>v.voiceURI===state.voiceURI)||preferredVoice(state.voices);}
+function chosenVoiceLabel(){const index=state.voices.findIndex(v=>v.voiceURI===state.voiceURI);return index>=0?`Bahasa ${index+1}`:(state.voices.length?'Bahasa 1':'Tidak tersedia');}
+function voiceStatusNote(){
+ if(state.voices.length)return '🔊 Suara bacaan dipilih secara automatik. Gunakan butang panduan untuk mendengar arahan dan butang audio untuk mendengar suku kata serta perkataan.';
+ return '🔊 Suara sintesis tidak tersedia pada masa ini. Aktifkan atau pasang suara Bahasa Malaysia atau Bahasa Indonesia pada tetapan suara peranti, kemudian buka semula permainan.';
+}
+function loadVoices(){
+ if(!('speechSynthesis' in window)){state.voices=[];state.voiceURI='';state.voiceStatus='Text-to-Speech tidak disokong oleh pelayar ini.';return;}
+ const got=window.speechSynthesis.getVoices()||[];
+ const choices=getSupportedVoiceChoices(got);
+ const previous=state.voiceURI;
+ state.voices=choices;
+ if(!choices.some(v=>v.voiceURI===previous))state.voiceURI=(preferredVoice(choices)||{}).voiceURI||'';
+ state.voiceStatus=choices.length?'Suara yang sesuai tersedia.':'Tiada suara yang sesuai tersedia.';
+}
+function updateGuidePlaybackButton(){
+ const btn=document.querySelector('[data-action="toggleGuide"]');
+ if(!btn)return;
+ const level=Number(btn.dataset.level);
+ const active=state.guideIsSpeaking&&state.guidePlaybackLevel===level;
+ btn.textContent=active?(state.guidePaused?'▶ SAMBUNG PANDUAN':'⏸ JEDA PANDUAN'):'▶ DENGAR CARA BERMAIN';
+ btn.setAttribute('aria-pressed',String(active&&!state.guidePaused));
+}
+function stopSpeechPlayback(){
+ state.speechToken++;
+ if('speechSynthesis' in window)window.speechSynthesis.cancel();
+ state.isSpeaking=false;state.guideIsSpeaking=false;state.guidePaused=false;state.guidePlaybackLevel=null;
+ duckMusic(false);updateGuidePlaybackButton();
+}
+function speakSequence(parts, opts={}){
+ if(!('speechSynthesis' in window)){state.voiceStatus='Pelayar ini tidak menyokong suara sintesis.';const notice=document.querySelector('.voice-status');if(notice)notice.textContent='Suara sintesis tidak disokong oleh pelayar ini. Cuba gunakan Microsoft Edge atau Google Chrome.';return;}
+ loadVoices();
+ const voice=chosenVoice();
+ if(!voice){state.voiceStatus='Tiada suara sintesis Bahasa Malaysia atau Bahasa Indonesia tersedia.';const notice=document.querySelector('.voice-status');if(notice)notice.textContent=voiceStatusNote();updateGuidePlaybackButton();return;}
+ const token=++state.speechToken;
+ window.speechSynthesis.cancel();
+ const list=Array.isArray(parts)?parts:[parts];
+ if(!list.length)return;
+ const guideLevel=Number.isInteger(opts.guideLevel)?opts.guideLevel:null;
+ state.isSpeaking=true;state.guideIsSpeaking=guideLevel!==null;state.guidePaused=false;state.guidePlaybackLevel=guideLevel;duckMusic(true);updateGuidePlaybackButton();
+ let ended=0;
+ list.forEach((txt)=>{
+   const u=new SpeechSynthesisUtterance(String(txt));
+   u.voice=voice;u.lang=(voice&&voice.lang)||'ms-MY';u.rate=Math.max(.55,Math.min(1.3,(opts.rate||state.rate)));u.pitch=1.04;u.volume=1;
+   const finish=()=>{
+     if(token!==state.speechToken)return;
+     ended++;
+     if(ended===list.length){state.isSpeaking=false;if(guideLevel!==null){state.guideIsSpeaking=false;state.guidePaused=false;state.guidePlaybackLevel=null;}duckMusic(false);updateGuidePlaybackButton();}
+   };
+   u.onend=finish;u.onerror=finish;window.speechSynthesis.speak(u);
+ });
+}
+function speakGuide(level){
+ const d=guideData(level);
+ const lines=[`Cara bermain ${level}. ${TITLES[level-1]}.`,...d.steps.map(s=>`${s[1]} ${s[2]}`),`Strategi penyelesaian masalah. Kenal pasti masalah, cari petunjuk, cuba strategi, kemudian semak dan baiki jawapan.`];
+ speakSequence(lines,{guideLevel:level,rate:state.rate});
+}
+function toggleGuidePlayback(level){
+ if(!('speechSynthesis' in window)){const notice=document.querySelector('.voice-status');if(notice)notice.textContent='Suara sintesis tidak disokong oleh pelayar ini. Cuba gunakan Microsoft Edge atau Google Chrome.';return;}
+ if(state.guideIsSpeaking&&state.guidePlaybackLevel===level){
+   if(state.guidePaused||window.speechSynthesis.paused){window.speechSynthesis.resume();state.guidePaused=false;state.isSpeaking=true;duckMusic(true);}
+   else{window.speechSynthesis.pause();state.guidePaused=true;state.isSpeaking=false;duckMusic(false);}
+   updateGuidePlaybackButton();return;
+ }
+ speakGuide(level);
+}
+function speakSyllables(word){speakSequence([word.syllables[0],word.syllables[1]],{rate:state.rate});}
+function speakWord(word){speakSequence([word.word.toLowerCase()]);}
+function speakCorrect(word){speakSequence([word.syllables[0],word.syllables[1],word.word.toLowerCase()],{rate:state.rate});}
+
+function initAudio(){
+ if(!state.audioCtx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;state.audioCtx=new AC();state.musicGain=state.audioCtx.createGain();state.musicGain.gain.value=state.musicOn?state.musicVolume:0;state.musicGain.connect(state.audioCtx.destination);}
+ if(state.audioCtx.state==='suspended'){try{const resumed=state.audioCtx.resume();if(resumed&&typeof resumed.catch==='function')resumed.catch(()=>{});}catch(_e){}}
+}
+function tone(freq,duration,gainVal=0.06,wave='sine',when){
+ if(!state.audioCtx||!state.musicGain)return;const ctx=state.audioCtx;const osc=ctx.createOscillator(),g=ctx.createGain();osc.type=wave;osc.frequency.setValueAtTime(freq,when||ctx.currentTime);g.gain.setValueAtTime(0.0001,when||ctx.currentTime);g.gain.exponentialRampToValueAtTime(gainVal, (when||ctx.currentTime)+.025);g.gain.exponentialRampToValueAtTime(0.0001,(when||ctx.currentTime)+duration);osc.connect(g);g.connect(state.musicGain);osc.start(when||ctx.currentTime);osc.stop((when||ctx.currentTime)+duration+.03);
+}
+function startMusic(){
+ if(!state.musicOn)return;initAudio();if(!state.audioCtx||state.musicTimer)return;state.musicStarted=true;
+ const melody=[523.25,659.25,783.99,659.25,587.33,698.46,880,698.46,523.25,659.25,783.99,987.77,880,783.99,659.25,587.33];
+ const bass=[261.63,0,329.63,0,293.66,0,349.23,0];
+ state.musicTimer=setInterval(()=>{if(!state.musicOn||!state.audioCtx||state.audioCtx.state!=='running')return;const t=state.audioCtx.currentTime;const f=melody[state.musicStep%melody.length];if(state.musicGain.gain.value>.025){tone(f,.22,.08,'triangle',t);if(state.musicStep%2===0)tone(bass[state.musicStep%bass.length]||196,.33,.045,'sine',t);}state.musicStep++;},270);
+}
+function unlockAudioAndKeepMusic(){
+ // Cuba mainkan muzik ketika halaman dibuka; jika pelayar menyekat autoplay,
+ // interaksi pertama pengguna akan membuka kunci audio dan muzik terus berjalan.
+ initAudio();
+ if(state.audioCtx&&state.audioCtx.state==='suspended'){
+   try{const p=state.audioCtx.resume();if(p&&typeof p.then==='function')p.then(()=>{if(state.musicOn&&state.musicGain)state.musicGain.gain.setTargetAtTime(state.isSpeaking?0.012:state.musicVolume,state.audioCtx.currentTime,.1);}).catch(()=>{});}catch(_e){}
+ }
+ if(state.musicOn)startMusic();
+} 
+function stopMusic(){if(state.musicTimer){clearInterval(state.musicTimer);state.musicTimer=null;}if(state.musicGain&&state.audioCtx)state.musicGain.gain.setTargetAtTime(0,state.audioCtx.currentTime,.08);}
+function duckMusic(duck){if(!state.musicGain||!state.audioCtx)return;const val=state.musicOn?(duck?0.012:state.musicVolume):0;state.musicGain.gain.cancelScheduledValues(state.audioCtx.currentTime);state.musicGain.gain.setTargetAtTime(val,state.audioCtx.currentTime,.12);}
+function toggleMusic(){state.musicOn=!state.musicOn;if(state.musicOn){initAudio();if(state.audioCtx&&state.musicGain)state.musicGain.gain.setTargetAtTime(state.musicVolume,state.audioCtx.currentTime,.1);startMusic();}else stopMusic();render();}
+function playChime(){initAudio();if(!state.audioCtx||!state.musicOn)return;const now=state.audioCtx.currentTime;tone(659.25,.13,.24,'sine',now);tone(783.99,.18,.20,'sine',now+.12);tone(1046.5,.25,.16,'sine',now+.25);}
+function playTreasureSound(){
+ initAudio();if(!state.audioCtx)return;const now=state.audioCtx.currentTime;
+ tone(220,.12,.12,'triangle',now);tone(277.18,.16,.12,'triangle',now+.12);
+ tone(329.63,.18,.13,'triangle',now+.28);tone(440,.28,.16,'sine',now+.48);
+ tone(659.25,.22,.14,'sine',now+.68);tone(783.99,.25,.14,'sine',now+.84);
+ tone(1046.5,.42,.18,'sine',now+1.02);tone(1318.51,.5,.12,'sine',now+1.18);
+}
+function playCongratulations(){
+ initAudio();if(!state.audioCtx)return;const now=state.audioCtx.currentTime;
+ tone(523.25,.14,.15,'sine',now);tone(659.25,.14,.15,'sine',now+.14);
+ tone(783.99,.24,.17,'sine',now+.28);tone(1046.5,.34,.16,'sine',now+.50);
+}
+
+function countHelpOnce(){if(!state.qHelpCounted){state.helpCount[state.level-1]++;state.qHelpCounted=true;}state.qUsedHelp=true;}
+function checkGame1(){if(state.questionDone)return;if(state.slots.some(x=>x===null)){state.feedback={type:'try',text:'Pilih kedua-dua suku kata dan letakkan pada ruang dahulu.'};renderGame();return;}
+ const w=WORDS[state.qIndex];const actual=state.slots.map(id=>state.shuffledTiles.find(t=>t.id===id)?.text||'');state.qAttempts++;
+ if(actual[0]===w.syllables[0]&&actual[1]===w.syllables[1]){
+  state.scores[0]++;if(state.qAttempts===1&&!state.qUsedHelp){state.firstTry[0]++;state.bonusStars++;state.streak++;state.bestStreak=Math.max(state.bestStreak,state.streak);}else{state.streak=0;}state.questionDone=true;state.feedback={type:'good',text:`Betul! ${w.syllables[0]} + ${w.syllables[1]} membentuk ${w.word}.`};renderGame();playChime();speakCorrect(w);
+ }else{state.errors[0]++;state.streak=0;countHelpOnce();state.feedback={type:'try',text:`Belum tepat. Kesilapan direkodkan (${state.errors[0]}). Kamu boleh cuba lagi. Klik suku kata pada ruang untuk mengeluarkannya, kemudian susun semula.`};renderGame();}
+}
+function answerChoice(word){if(state.questionDone)return;const target=WORDS[state.qIndex];const idx=state.level-1;state.qAttempts++;
+ if(word===target.word){state.scores[idx]++;if(state.qAttempts===1&&!state.qUsedHelp){state.firstTry[idx]++;state.bonusStars++;state.streak++;state.bestStreak=Math.max(state.bestStreak,state.streak);}else{state.streak=0;}state.questionDone=true;state.feedback={type:'good',text:`Betul! ${target.word} sepadan dengan gambar.`};renderGame();playChime();if(state.level===2)speakSequence(['Syabas. Jawapan yang betul.',target.word.toLowerCase()]);else speakSequence(['Hebat. Kamu berjaya.',target.word.toLowerCase()]);}
+ else{state.errors[idx]++;state.streak=0;countHelpOnce();state.feedback={type:'try',text:`Belum tepat. Kesilapan direkodkan (${state.errors[idx]}). Baca pilihan sekali lagi dan cuba semula!`};renderGame();}
+}
+function nextQuestion(){if(!state.questionDone)return;if(state.qIndex<5){state.qIndex++;resetQuestion();renderGame();}else{if(state.level<3){renderScore(state.level);playCongratulations();}else{renderFinal();playTreasureSound();}}}
+function restartLevel(level){state.level=level;for(let i=level-1;i<3;i++){state.scores[i]=0;state.firstTry[i]=0;state.helpCount[i]=0;state.errors[i]=0;}state.qIndex=0;resetQuestion();renderInstructions(level);}
+function restartAll(){state.scores=[0,0,0];state.firstTry=[0,0,0];state.helpCount=[0,0,0];state.errors=[0,0,0];state.bonusStars=0;state.streak=0;state.bestStreak=0;state.qIndex=0;state.level=1;state.sessionStarted=true;resetQuestion();renderInstructions(1);}
+function startSession(){restartAll();startMusic();}
+function home(){stopSpeechPlayback();state.sessionStarted=false;renderCover();}
+function chooseSyllable(index){
+ if(state.questionDone)return;
+ const tile=state.shuffledTiles.find(t=>t.index===index);
+ if(!tile)return;
+ state.slots[index]=tile.id;
+ state.selectedTile=null;
+ state.feedback=null;
+ renderGame();
+ speakSequence([`Suku kata ${index===0?'pertama':'kedua'}. ${tile.text}`],{rate:state.rate});
+}
+function selectTile(id){if(state.questionDone)return;const used=state.slots.includes(id);if(used){state.selectedTile=id;state.feedback={type:'neutral',text:'Kepingan ini sudah berada dalam ruang. Klik ruangnya untuk mengeluarkannya jika mahu menyusun semula.'};}else{state.selectedTile=id;const tile=state.shuffledTiles.find(t=>t.id===id);state.feedback={type:'neutral',text:`Kamu memilih “${tile.text}”. Sekarang klik ruang pertama atau kedua.`};}renderGame();}
+function placeSlot(slotIndex,id=null){if(state.questionDone)return;if(id!==null){if(state.slots.includes(id)){state.slots=state.slots.map(v=>v===id?null:v);}state.slots[slotIndex]=id;state.selectedTile=null;state.feedback=null;const placed=state.shuffledTiles.find(t=>t.id===id);renderGame();if(placed)speakSequence([placed.text],{rate:state.rate});return;}
+ if(state.selectedTile!==null){const tid=state.selectedTile;const placed=state.shuffledTiles.find(t=>t.id===tid);state.slots=state.slots.map((v,i)=>i!==slotIndex&&v===tid?null:v);state.slots[slotIndex]=tid;state.selectedTile=null;state.feedback=null;renderGame();if(placed)speakSequence([placed.text],{rate:state.rate});}
+ else if(state.slots[slotIndex]!==null){state.slots[slotIndex]=null;state.feedback={type:'neutral',text:'Kepingan dikembalikan. Pilih kepingan lain jika mahu.'};renderGame();}
+}
+function clearSlots(){state.slots=[null,null];state.selectedTile=null;state.feedback=null;renderGame();}
+function markAudioHelp(){countHelpOnce();}
+
+
+/* Pengesahan keluar melalui kekunci Escape; dialog boleh digunakan dengan papan kekunci dan pembaca skrin. */
+function closeExitConfirmation(restoreFocus=true){
+ const dialog=document.getElementById('exitConfirmDialog');
+ if(!dialog)return;
+ const previous=dialog._returnFocus;
+ dialog.remove();
+ if(restoreFocus&&previous&&document.contains(previous))previous.focus();
+}
+function showExitConfirmation(){
+ if(document.getElementById('exitConfirmDialog'))return;
+ const previous=document.activeElement;
+ const overlay=document.createElement('div');
+ overlay.id='exitConfirmDialog';
+ overlay.className='exit-confirm-overlay';
+ overlay.innerHTML=`<section class="exit-confirm-box" role="alertdialog" aria-modal="true" aria-labelledby="exitConfirmTitle" aria-describedby="exitConfirmDescription" tabindex="-1"><div class="exit-confirm-icon" aria-hidden="true">🚪</div><h2 id="exitConfirmTitle">Kembali ke halaman arahan?</h2><p id="exitConfirmDescription">Adakah kamu mahu meninggalkan soalan pertama dan kembali ke halaman arahan Permainan ${state.level}?</p><div class="exit-confirm-actions"><button type="button" class="exit-confirm-yes" id="exitConfirmYes">Ya</button><button type="button" class="exit-confirm-no" id="exitConfirmNo">Tidak</button></div><p class="exit-confirm-hint">Pilih “Ya” untuk kembali ke halaman arahan permainan ini atau “Tidak” untuk meneruskan soalan. Tekan Escape sekali lagi untuk menutup pengesahan ini.</p></section>`;
+ overlay._returnFocus=previous;
+ document.body.appendChild(overlay);
+ document.getElementById('exitConfirmYes').addEventListener('click',()=>{const level=state.level;closeExitConfirmation(false);stopSpeechPlayback();renderInstructions(level);});
+ document.getElementById('exitConfirmNo').addEventListener('click',()=>closeExitConfirmation(true));
+ overlay.querySelector('.exit-confirm-box').addEventListener('keydown',e=>{
+   if(e.key==='Tab'){
+     const buttons=[document.getElementById('exitConfirmYes'),document.getElementById('exitConfirmNo')];
+     if(e.shiftKey&&document.activeElement===buttons[0]){e.preventDefault();buttons[1].focus();}
+     else if(!e.shiftKey&&document.activeElement===buttons[1]){e.preventDefault();buttons[0].focus();}
+   }
+ });
+ document.getElementById('exitConfirmNo').focus();
+}
+
+window.addEventListener('keydown',e=>{
+ if(e.altKey||e.ctrlKey||e.metaKey)return;
+ if(e.key==='Escape'){
+   e.preventDefault();
+   if(document.getElementById('exitConfirmDialog')){closeExitConfirmation(true);return;}
+   // Escape hanya aktif pada soalan pertama (paparan pertama) setiap permainan.
+   // Ia meminta pengesahan sebelum kembali ke halaman arahan bagi permainan semasa.
+   if(state.screen==='game' && state.qIndex===0){showExitConfirmation();}
+   return;
+ }
+ const tag=(e.target&&e.target.tagName||'').toLowerCase();
+ if(['input','select','textarea'].includes(tag))return;
+ if(e.key.toLowerCase()==='m'){
+   e.preventDefault();toggleMusic();
+ }else if(e.key.toLowerCase()==='a'){
+   e.preventDefault();
+   if(state.screen==='instructions'){toggleGuidePlayback(state.level);}
+   else if(state.screen==='game'){
+     if(state.guideIsSpeaking){
+       if(window.speechSynthesis&&window.speechSynthesis.paused){window.speechSynthesis.resume();state.guidePaused=false;state.isSpeaking=true;duckMusic(true);}
+       else if(window.speechSynthesis){window.speechSynthesis.pause();state.guidePaused=true;state.isSpeaking=false;duckMusic(false);}
+     }else{speakGuide(state.level);}
+     updateGuidePlaybackButton();
+   }
+ }
+});
+app.addEventListener('click',e=>{
+ const b=e.target.closest('[data-action]');if(!b)return;const a=b.dataset.action;
+ switch(a){
+  case 'start':startSession();break;
+  case 'howto':renderHowTo();break;
+  case 'backCover':home();break;
+  case 'toggleMusic':toggleMusic();break;
+  case 'toggleGuide':toggleGuidePlayback(Number(b.dataset.level));break;
+  case 'beginLevel':beginLevel(Number(b.dataset.level));startMusic();break;
+  case 'hearGuideDuring':speakGuide(state.level);break;
+  case 'hearSyllable':markAudioHelp();speakSequence([WORDS[state.qIndex].syllables[Number(b.dataset.index)]],{rate:state.rate});break;
+  case 'hearSyllables':markAudioHelp();speakSyllables(WORDS[state.qIndex]);break;
+  case 'hearWord':markAudioHelp();speakWord(WORDS[state.qIndex]);break;
+  case 'hearGenericHint':markAudioHelp();speakSequence(['Lihat gambar. Baca setiap perkataan dengan perlahan. Cari perkataan yang sesuai dengan gambar.']);break;
+  case 'tile':selectTile(b.dataset.id);break;
+   case 'chooseSyllable':chooseSyllable(Number(b.dataset.index));break;
+  case 'slot':placeSlot(Number(b.dataset.slot));break;
+  case 'clearSlots':clearSlots();break;
+  case 'checkAnswer':checkGame1();break;
+  case 'answerWord':case 'answerPicture':answerChoice(b.dataset.word);break;
+  case 'nextQuestion':nextQuestion();break;
+  case 'replayLevel':restartLevel(Number(b.dataset.level));break;
+  case 'nextLevel':{const l=Number(b.dataset.level);if(l<3)renderInstructions(l+1);else renderFinal();break;}
+  case 'restartAll':restartAll();break;
+  case 'home':home();break;
+ }
+});
+app.addEventListener('input',e=>{if(e.target.id==='musicVol'){state.musicVolume=Math.max(0,Math.min(.18,Number(e.target.value)/100));if(state.musicGain&&state.audioCtx)state.musicGain.gain.setTargetAtTime(state.musicOn?(state.isSpeaking?0.012:state.musicVolume):0,state.audioCtx.currentTime,.08);}});
+app.addEventListener('change',e=>{
+ if(e.target.id==='rateSelect'){state.rate=Number(e.target.value)||.8;}
+});
+app.addEventListener('dragstart',e=>{const tile=e.target.closest('[data-action="tile"]');if(tile&&!state.questionDone){e.dataTransfer.setData('text/plain',tile.dataset.id);e.dataTransfer.effectAllowed='move';}});
+app.addEventListener('dragover',e=>{const slot=e.target.closest('[data-drop="true"]');if(slot){e.preventDefault();e.dataTransfer.dropEffect='move';}});
+app.addEventListener('drop',e=>{const slot=e.target.closest('[data-drop="true"]');if(slot){e.preventDefault();const id=e.dataTransfer.getData('text/plain');if(id)placeSlot(Number(slot.dataset.slot),id);}});
+
+loadVoices();
+if('speechSynthesis' in window){window.speechSynthesis.onvoiceschanged=()=>{const before=state.voiceURI;loadVoices();if(state.screen==='cover'&&before!==state.voiceURI)renderCover();};setTimeout(()=>{const before=state.voiceURI;loadVoices();if(state.screen==='cover'&&before!==state.voiceURI)renderCover();},700);}
+renderCover();
+// Cuba memulakan muzik sebaik sahaja aplikasi dibuka.
+// Pelayar tertentu menyekat bunyi automatik; interaksi pertama akan mengaktifkannya.
+unlockAudioAndKeepMusic();
+const firstGestureUnlock=()=>unlockAudioAndKeepMusic();
+window.addEventListener('pointerdown',firstGestureUnlock,{once:true,passive:true});
+window.addEventListener('keydown',firstGestureUnlock,{once:true});
+window.addEventListener('touchstart',firstGestureUnlock,{once:true,passive:true});
+})();
+</script>
+</body>
+</html>
